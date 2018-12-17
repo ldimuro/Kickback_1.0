@@ -12,9 +12,13 @@
 		84814CB821C84707002CEAE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84814CB621C84707002CEAE2 /* Main.storyboard */; };
 		84814CBA21C84708002CEAE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84814CB921C84708002CEAE2 /* Assets.xcassets */; };
 		84814CBD21C84708002CEAE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84814CBB21C84708002CEAE2 /* LaunchScreen.storyboard */; };
+		84FFDB6121C84C85003B2C70 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */; };
+		84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6221C85350003B2C70 /* AddStationViewController.swift */; };
+		D513E765B6F8101D29891523 /* Pods_Kickback_1_0.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 666A0D8C6732D4E8711D2184 /* Pods_Kickback_1_0.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		666A0D8C6732D4E8711D2184 /* Pods_Kickback_1_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kickback_1_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84814CAF21C84707002CEAE2 /* Kickback_1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickback_1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84814CB221C84707002CEAE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84814CB421C84707002CEAE2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +26,10 @@
 		84814CB921C84708002CEAE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84814CBC21C84708002CEAE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84814CBE21C84708002CEAE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
+		84FFDB6221C85350003B2C70 /* AddStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStationViewController.swift; sourceTree = "<group>"; };
+		888CB2DCA56F83266C31D79B /* Pods-Kickback_1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickback_1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kickback_1.0/Pods-Kickback_1.0.release.xcconfig"; sourceTree = "<group>"; };
+		A90ACF5EDC639EAEE76B0240 /* Pods-Kickback_1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kickback_1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kickback_1.0/Pods-Kickback_1.0.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D513E765B6F8101D29891523 /* Pods_Kickback_1_0.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27AC736576F293D3D2F05B69 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				666A0D8C6732D4E8711D2184 /* Pods_Kickback_1_0.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		84814CA621C84706002CEAE2 = {
 			isa = PBXGroup;
 			children = (
 				84814CB121C84707002CEAE2 /* Kickback_1.0 */,
 				84814CB021C84707002CEAE2 /* Products */,
+				FF1DD64E2AD34DF4297F54F6 /* Pods */,
+				27AC736576F293D3D2F05B69 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +73,65 @@
 		84814CB121C84707002CEAE2 /* Kickback_1.0 */ = {
 			isa = PBXGroup;
 			children = (
-				84814CB221C84707002CEAE2 /* AppDelegate.swift */,
-				84814CB421C84707002CEAE2 /* ViewController.swift */,
-				84814CB621C84707002CEAE2 /* Main.storyboard */,
+				84FFDB5B21C84A80003B2C70 /* View */,
+				84FFDB5D21C84A9A003B2C70 /* Controller */,
+				84FFDB5C21C84A89003B2C70 /* Model */,
 				84814CB921C84708002CEAE2 /* Assets.xcassets */,
-				84814CBB21C84708002CEAE2 /* LaunchScreen.storyboard */,
 				84814CBE21C84708002CEAE2 /* Info.plist */,
 			);
 			path = Kickback_1.0;
+			sourceTree = "<group>";
+		};
+		84FFDB5B21C84A80003B2C70 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84814CB621C84707002CEAE2 /* Main.storyboard */,
+				84814CBB21C84708002CEAE2 /* LaunchScreen.storyboard */,
+				84FFDB5E21C84AAB003B2C70 /* Custom Cells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84FFDB5C21C84A89003B2C70 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		84FFDB5D21C84A9A003B2C70 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				84FFDB5F21C84ACD003B2C70 /* Classes */,
+				84814CB421C84707002CEAE2 /* ViewController.swift */,
+				84814CB221C84707002CEAE2 /* AppDelegate.swift */,
+				84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */,
+				84FFDB6221C85350003B2C70 /* AddStationViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		84FFDB5E21C84AAB003B2C70 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
+		84FFDB5F21C84ACD003B2C70 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		FF1DD64E2AD34DF4297F54F6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A90ACF5EDC639EAEE76B0240 /* Pods-Kickback_1.0.debug.xcconfig */,
+				888CB2DCA56F83266C31D79B /* Pods-Kickback_1.0.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +141,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84814CC121C84708002CEAE2 /* Build configuration list for PBXNativeTarget "Kickback_1.0" */;
 			buildPhases = (
+				11B14416C089D17303F15394 /* [CP] Check Pods Manifest.lock */,
 				84814CAB21C84707002CEAE2 /* Sources */,
 				84814CAC21C84707002CEAE2 /* Frameworks */,
 				84814CAD21C84707002CEAE2 /* Resources */,
+				3BC40674F8F87D5CB2AC2061 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,6 +202,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		11B14416C089D17303F15394 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Kickback_1.0-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3BC40674F8F87D5CB2AC2061 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Kickback_1.0/Pods-Kickback_1.0-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireObjectMapper/AlamofireObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kickback_1.0/Pods-Kickback_1.0-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		84814CAB21C84707002CEAE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -137,6 +264,8 @@
 			files = (
 				84814CB521C84707002CEAE2 /* ViewController.swift in Sources */,
 				84814CB321C84707002CEAE2 /* AppDelegate.swift in Sources */,
+				84FFDB6121C84C85003B2C70 /* HomePageViewController.swift in Sources */,
+				84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +409,7 @@
 		};
 		84814CC221C84708002CEAE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A90ACF5EDC639EAEE76B0240 /* Pods-Kickback_1.0.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -298,6 +428,7 @@
 		};
 		84814CC321C84708002CEAE2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 888CB2DCA56F83266C31D79B /* Pods-Kickback_1.0.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
