@@ -7,25 +7,28 @@
 //
 
 import UIKit
+import Firebase
 
 class AddStationViewController: UIViewController {
     
     @IBOutlet weak var pinLabel: UILabel!
+    var pin: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let pin = randomPin()
+        pin = randomPin()
         
         pinLabel.text = pin
     }
     
     @IBAction func createButton(_ sender: Any) {
+        
+        saveStation()
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -38,17 +41,41 @@ class AddStationViewController: UIViewController {
         
         let alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
                         "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-        var pin = ""
+        var randomPin = ""
         
         //Chooses 4 random letters
         for _ in 1...4 {
             let randomInt = Int.random(in: 0...23)
             
-            pin = pin + alphabet[randomInt] + " "
+            randomPin = randomPin + alphabet[randomInt] + " "
         }
         
-        return pin
+        return randomPin
         
+    }
+    
+    //Save station to Firebase
+    func saveStation() {
+        
+        let addStation = Database.database().reference().child("Stations")
+        let timestamp = "\(Date())"
+        
+        let postDictionary = ["Owner": "Lou",
+                              "Users": ["Chantal", "Nick", "Caden", "Grant"],
+                              "Playlists": ["Lou's Playlist", "for you", "Best of the Strokes"],
+                              "Queue": ["aDfs45gsD", "UDid7Fuvds", "dFUdsf98VU", "jLIJdsdf8aHd9"],
+                              "Timestamp": timestamp] as [String : Any]
+        
+        addStation.child(pin!).setValue(postDictionary) {
+            (error, reference) in
+            
+            if(error != nil) {
+                print(error!)
+            }
+            else {
+                print("Station saved successfully")
+            }
+        }
     }
     
     
