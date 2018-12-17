@@ -60,10 +60,20 @@ class AddStationViewController: UIViewController {
         let addStation = Database.database().reference().child("Stations")
         let timestamp = "\(Date())"
         
+        let songDict = ["Name": "Say It Ain't So",
+                        "Artist": "Weezer",
+                        "ID": "Jdjs9Djs",
+                        "User": "Lou"] as [String : Any]
+        
+        let playlistDict = ["Name": "Lou's Playlist",
+                            "Songs": [songDict, songDict, songDict, songDict],
+                            "ID": "aDfs45gsD",
+                            "Owner": "Lou"] as [String : Any]
+        
         let postDictionary = ["Owner": "Lou",
                               "Users": ["Chantal", "Nick", "Caden", "Grant"],
-                              "Playlists": ["Lou's Playlist", "for you", "Best of the Strokes"],
-                              "Queue": ["aDfs45gsD", "UDid7Fuvds", "dFUdsf98VU", "jLIJdsdf8aHd9"],
+                              "Playlists": [playlistDict, playlistDict, playlistDict, playlistDict],
+                              "Queue": [songDict, songDict, songDict, songDict],
                               "Timestamp": timestamp] as [String : Any]
         
         addStation.child(pin!).setValue(postDictionary) {
