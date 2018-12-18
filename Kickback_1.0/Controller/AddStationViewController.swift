@@ -17,12 +17,15 @@ class AddStationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        pin = randomPin()
+        let formattedPin = randomPin()
         
-        pinLabel.text = pin
+        pin = formattedPin.replacingOccurrences(of: " ", with: "") // get rid of the spaces in-between each character
+        
+        pinLabel.text = formattedPin
     }
     
     @IBAction func createButton(_ sender: Any) {
@@ -47,7 +50,7 @@ class AddStationViewController: UIViewController {
         for _ in 1...4 {
             let randomInt = Int.random(in: 0...23)
             
-            randomPin = randomPin + alphabet[randomInt]
+            randomPin = randomPin + alphabet[randomInt] + " "
         }
         
         return randomPin

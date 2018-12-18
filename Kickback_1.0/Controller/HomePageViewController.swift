@@ -92,6 +92,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
                     self.enterButton.backgroundColor = UIColor.gray
+                    
+                    self.performSegue(withIdentifier: "goToStation", sender: self)
                 }
             }
         }
