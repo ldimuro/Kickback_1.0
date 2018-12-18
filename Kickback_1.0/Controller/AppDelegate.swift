@@ -47,3 +47,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+//Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
