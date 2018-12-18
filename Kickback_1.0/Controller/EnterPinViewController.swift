@@ -17,11 +17,13 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //The Enter button is initially faded
         pinTextfield.delegate = self
+//        pinTextfield.defaultTextAttributes.updateValue(12.0, forKey: NSAttributedString.Key.kern)
+        
+        //The Enter button is initially faded
         if (pinTextfield.text?.isEmpty)! {
             self.enterButton.isEnabled = false
-            self.enterButton.backgroundColor = UIColor.gray
+            self.enterButton.backgroundColor = UIColor.lightGray
         }
         
         self.hideKeyboardWhenTappedAround()
@@ -29,7 +31,6 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
     
     //If the PIN textfield is empty, the Enter button will be faded
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         
         let text = (pinTextfield.text! as NSString).replacingCharacters(in: range, with: string)
         let count = text.count
@@ -44,7 +45,7 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
                 enterButton.backgroundColor = UIColor(red: 0.0196, green: 0.4784, blue: 1.0, alpha: 1.0)
             } else {
                 enterButton.isEnabled = false
-                enterButton.backgroundColor = UIColor.gray
+                enterButton.backgroundColor = UIColor.lightGray
             }
             
             //User can only type 4 characters in the textfield
@@ -65,7 +66,5 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
         enterButton.isEnabled = false
         enterButton.backgroundColor = UIColor.gray
     }
-    
-    
     
 }
