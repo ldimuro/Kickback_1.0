@@ -18,7 +18,7 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         pinTextfield.delegate = self
-//        pinTextfield.defaultTextAttributes.updateValue(12.0, forKey: NSAttributedString.Key.kern)
+        pinTextfield.defaultTextAttributes.updateValue(5.0, forKey: NSAttributedString.Key.kern)
         
         //The Enter button is initially faded
         if (pinTextfield.text?.isEmpty)! {
@@ -37,6 +37,7 @@ class EnterPinViewController: UIViewController, UITextFieldDelegate {
         let range = string.rangeOfCharacter(from: NSCharacterSet.letters)
         let char = string.cString(using: String.Encoding.utf8)!
         let isBackSpace = strcmp(char, "\\b")
+        
         
         //Only accepts letters and the backspace button as inputs
         if (range != nil) || (isBackSpace == -92) {

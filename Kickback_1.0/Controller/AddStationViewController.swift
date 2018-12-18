@@ -47,7 +47,7 @@ class AddStationViewController: UIViewController {
         for _ in 1...4 {
             let randomInt = Int.random(in: 0...23)
             
-            randomPin = randomPin + alphabet[randomInt] + " "
+            randomPin = randomPin + alphabet[randomInt]
         }
         
         return randomPin
