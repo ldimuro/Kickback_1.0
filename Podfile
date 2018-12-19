@@ -13,7 +13,6 @@ pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Core'
 pod 'Firebase/Storage'
-pod 'SwipeCellKit'
 pod 'AlamofireObjectMapper', '~> 5.0'
 
 end
