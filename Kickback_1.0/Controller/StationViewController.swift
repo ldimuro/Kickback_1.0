@@ -9,6 +9,8 @@
 import UIKit
 
 class StationViewController: UIViewController {
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +20,21 @@ class StationViewController: UIViewController {
     }
     
     @IBAction func exitStationPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        
+        let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        //Leave Station option
+        optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
+            print("Left Station")
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        //Cancel option
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        optionMenu.addAction(cancelAction)
+        
+        self.present(optionMenu, animated: true, completion: nil)
+        
     }
     
     

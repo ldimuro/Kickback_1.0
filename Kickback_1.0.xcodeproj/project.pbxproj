@@ -13,6 +13,7 @@
 		84814CBA21C84708002CEAE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84814CB921C84708002CEAE2 /* Assets.xcassets */; };
 		84814CBD21C84708002CEAE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84814CBB21C84708002CEAE2 /* LaunchScreen.storyboard */; };
 		84830B9221C9A201006DF341 /* StationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84830B9121C9A201006DF341 /* StationViewController.swift */; };
+		84830B9421C9B2CF006DF341 /* AddPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84830B9321C9B2CF006DF341 /* AddPlaylist.swift */; };
 		84FFDB6121C84C85003B2C70 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */; };
 		84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6221C85350003B2C70 /* AddStationViewController.swift */; };
 		84FFDB6521C85B3E003B2C70 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84FFDB6421C85B3E003B2C70 /* GoogleService-Info.plist */; };
@@ -29,6 +30,7 @@
 		84814CBC21C84708002CEAE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84814CBE21C84708002CEAE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84830B9121C9A201006DF341 /* StationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationViewController.swift; sourceTree = "<group>"; };
+		84830B9321C9B2CF006DF341 /* AddPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylist.swift; sourceTree = "<group>"; };
 		84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		84FFDB6221C85350003B2C70 /* AddStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStationViewController.swift; sourceTree = "<group>"; };
 		84FFDB6421C85B3E003B2C70 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		84FFDB5F21C84ACD003B2C70 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				84830B9321C9B2CF006DF341 /* AddPlaylist.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				84FFDB6121C84C85003B2C70 /* HomePageViewController.swift in Sources */,
 				84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */,
 				84830B9221C9A201006DF341 /* StationViewController.swift in Sources */,
+				84830B9421C9B2CF006DF341 /* AddPlaylist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
