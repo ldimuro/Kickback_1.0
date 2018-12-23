@@ -39,27 +39,6 @@ class StationViewController: UIViewController {
             }
         }
 
-//        getStationUsers()
-//
-//        //DELAYS FOR A SECOND TO GIVE TIME TO COMMUNICATE INFORMATION WITH SERVER
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // in a second...
-//            for each in self.userArray {
-//                print(each)
-//            }
-//        }
-//
-//        for each in userArray {
-//            let userDict = ["Name": each]
-//
-//            arrayOfUsers.append(userDict)
-//        }
-//
-//        let ref = Database.database().reference().child("Stations").child(stationPin).child("Users")
-//
-//        ref.setValue(arrayOfUsers)
-
-//        ref.updateChildValues(["Users": userArray])
-
     }
     
     @IBAction func exitStationPressed(_ sender: Any) {
@@ -69,6 +48,15 @@ class StationViewController: UIViewController {
         //Leave Station option
         optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
             print("Left Station")
+            
+            let ref = Database.database().reference().child("Stations").child(self.stationPin).child("Users")
+            
+            ref.child(self.username).removeValue { (error, reference)  in
+                if error != nil {
+                    print("error \(error!)")
+                }
+            }
+            
             self.dismiss(animated: true, completion: nil)
         }))
         
@@ -80,23 +68,6 @@ class StationViewController: UIViewController {
         
     }
     
-    func getStationUsers() {
-        let userRef = Database.database().reference().child("Stations").child(stationPin).child("Users")
-        
-        //if USER != OWNER
-            userArray.append(username)
-        
-        userRef.observe(.value) { (snapshot) in
-            
-            for snap in snapshot.children {
-                
-                let snapKey = snap as! DataSnapshot
-                
-                self.userArray.append(snapKey.value as! String)
-                
-            }
-        }
-    }
     
     
 }
