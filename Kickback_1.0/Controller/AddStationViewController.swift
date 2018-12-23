@@ -95,14 +95,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         saveStation()
         
-//        performSegue(withIdentifier: "ownerStation", sender: self)
-        
-        
-        //DELAYS FOR A SECOND TO GIVE TIME TO COMMUNICATE INFORMATION WITH SERVER
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // in a second...
-//            print("SEGUE")
-//            self.performSegue(withIdentifier: "ownerStation", sender: self)
-//        }
     }
     
     @IBAction func cancelButton(_ sender: Any) {
