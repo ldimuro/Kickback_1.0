@@ -139,7 +139,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //The final dictionary of station
         let postDictionary = ["Owner": "ldimuro",
-                              "Users": ["N/A"],
+                              "Users": [],
                               "Playlists": arrayOfPlaylists,
                               "Queue": [songDict, songDict, songDict, songDict],
                               "Timestamp": timestamp] as [String : Any]
