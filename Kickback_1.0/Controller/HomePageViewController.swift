@@ -21,6 +21,11 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let username = "ldimuro"
+        UserDefaults.standard.set(username, forKey: "username")
+        UserDefaults.standard.set("none", forKey: "station")
+        UserDefaults.standard.set(false, forKey: "isOwner")
 
         errorLabel.isHidden = true
         pinTextfield.delegate = self
@@ -92,6 +97,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
                     self.enterButton.backgroundColor = UIColor.gray
+                    
+                    UserDefaults.standard.set(key, forKey: "station")
                     
                     self.performSegue(withIdentifier: "goToStation", sender: self)
                 }

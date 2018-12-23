@@ -88,9 +88,13 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBAction func createButton(_ sender: Any) {
         
+        UserDefaults.standard.set(true, forKey: "isOwner")
+        UserDefaults.standard.set(pin, forKey: "station")
+        self.performSegue(withIdentifier: "ownerStation", sender: self)
+//        dismiss(animated: false, completion: nil)
+        
         saveStation()
         
-        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelButton(_ sender: Any) {
@@ -139,7 +143,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         //The final dictionary of station
         let postDictionary = ["Owner": "ldimuro",
-                              "Users": ["N/A"],
+                              "Users": [],
                               "Playlists": arrayOfPlaylists,
                               "Queue": [songDict, songDict, songDict, songDict],
                               "Timestamp": timestamp] as [String : Any]

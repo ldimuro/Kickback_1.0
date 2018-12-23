@@ -7,27 +7,84 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseStorage
 
 class StationViewController: UIViewController {
     
-    
+    let username = "testUser"
+    let stationPin = UserDefaults.standard.string(forKey: "station")
+    let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
+    var userArray = [String]()
+    var arrayOfUsers = [[String : Any]]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "D S S O"
+        self.title = stationPin
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        //If user is not the owner
+        if !isOwner {
+            let userDict = ["Name": username]
+            let ref = Database.database().reference().child("Stations").child(stationPin!).child("Users")
+            
+            ref.child(username).setValue(userDict) {
+                (error, reference) in
+                
+                if(error != nil) {
+                    print(error!)
+                } else {
+                    print("User added successfully")
+                }
+            }
+        }
     }
     
     @IBAction func exitStationPressed(_ sender: Any) {
         
         let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        //Leave Station option
-        optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
-            print("Left Station")
-            self.dismiss(animated: true, completion: nil)
-        }))
+        //If user is owner of the station and leaves, the entire station is removed
+        if isOwner {
+            optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
+                print("Left Station")
+                
+                let ref = Database.database().reference().child("Stations").child(self.stationPin!)
+                
+                ref.removeValue { (error, reference)  in
+                    if error != nil {
+                        print("error \(error!)")
+                    }
+                }
+                
+                UserDefaults.standard.set(false, forKey: "isOwner")
+                UserDefaults.standard.set("none", forKey: "station")
+                
+                self.dismiss(animated: true, completion: nil)
+            }))
+        }
+        //If user is not the owner and leaves, only they will be removed from the station
+        else {
+            optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
+                print("Left Station")
+                
+                let ref = Database.database().reference().child("Stations").child(self.stationPin!).child("Users")
+                
+                ref.child(self.username).removeValue { (error, reference)  in
+                    if error != nil {
+                        print("error \(error!)")
+                    }
+                }
+                
+                UserDefaults.standard.set("none", forKey: "station")
+                
+                self.dismiss(animated: true, completion: nil)
+            }))
+        }
         
         //Cancel option
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -36,6 +93,7 @@ class StationViewController: UIViewController {
         self.present(optionMenu, animated: true, completion: nil)
         
     }
+    
     
     
 }
