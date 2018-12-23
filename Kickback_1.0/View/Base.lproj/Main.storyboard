@@ -156,6 +156,7 @@
                     <connections>
                         <outlet property="pinLabel" destination="js2-Id-dmL" id="BMr-SQ-AKH"/>
                         <outlet property="playlistTable" destination="7n2-5B-eA5" id="kXR-TE-8Rj"/>
+                        <segue destination="mAD-RO-YMo" kind="showDetail" identifier="ownerStation" id="RaK-ZK-13X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ys1-xE-G1K" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -314,7 +315,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Rq-i3-mCP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3180" y="22.906403940886701"/>
+            <point key="canvasLocation" x="3252" y="23"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bjl-0D-LCW">
@@ -346,4 +347,7 @@
         <image name="strokes" width="1500" height="1489"/>
         <image name="users" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="RaK-ZK-13X"/>
+    </inferredMetricsTieBreakers>
 </document>
