@@ -18,6 +18,8 @@ class StationViewController: UIViewController {
     var userArray = [String]()
     var arrayOfUsers = [[String : Any]]()
 
+    //MARK: VIEW DID LOAD/APPEAR
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,6 +45,14 @@ class StationViewController: UIViewController {
             }
         }
     }
+    
+    //MARK: SPOTIFY
+    
+    
+    
+    
+    
+    //MARK: BUTTONS
     
     @IBAction func exitStationPressed(_ sender: Any) {
         
