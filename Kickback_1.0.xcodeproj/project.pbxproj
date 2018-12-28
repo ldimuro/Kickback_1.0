@@ -14,6 +14,7 @@
 		84814CBD21C84708002CEAE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84814CBB21C84708002CEAE2 /* LaunchScreen.storyboard */; };
 		84830B9221C9A201006DF341 /* StationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84830B9121C9A201006DF341 /* StationViewController.swift */; };
 		84830B9421C9B2CF006DF341 /* AddPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84830B9321C9B2CF006DF341 /* AddPlaylist.swift */; };
+		84C20CAD21D56BF5004AE5C5 /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C20CAC21D56BF5004AE5C5 /* SpotifyiOS.framework */; };
 		84FFDB6121C84C85003B2C70 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */; };
 		84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FFDB6221C85350003B2C70 /* AddStationViewController.swift */; };
 		84FFDB6521C85B3E003B2C70 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84FFDB6421C85B3E003B2C70 /* GoogleService-Info.plist */; };
@@ -31,6 +32,8 @@
 		84814CBE21C84708002CEAE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84830B9121C9A201006DF341 /* StationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationViewController.swift; sourceTree = "<group>"; };
 		84830B9321C9B2CF006DF341 /* AddPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlaylist.swift; sourceTree = "<group>"; };
+		84C20CAB21D5696D004AE5C5 /* Kickback-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Kickback-Bridging-Header.h"; path = "Controller/Kickback-Bridging-Header.h"; sourceTree = "<group>"; };
+		84C20CAC21D56BF5004AE5C5 /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
 		84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		84FFDB6221C85350003B2C70 /* AddStationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStationViewController.swift; sourceTree = "<group>"; };
 		84FFDB6421C85B3E003B2C70 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -44,6 +47,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D513E765B6F8101D29891523 /* Pods_Kickback_1_0.framework in Frameworks */,
+				84C20CAD21D56BF5004AE5C5 /* SpotifyiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,12 +83,14 @@
 		84814CB121C84707002CEAE2 /* Kickback_1.0 */ = {
 			isa = PBXGroup;
 			children = (
+				84C20CAC21D56BF5004AE5C5 /* SpotifyiOS.framework */,
 				84FFDB5B21C84A80003B2C70 /* View */,
 				84FFDB5D21C84A9A003B2C70 /* Controller */,
 				84FFDB5C21C84A89003B2C70 /* Model */,
 				84814CB921C84708002CEAE2 /* Assets.xcassets */,
 				84814CBE21C84708002CEAE2 /* Info.plist */,
 				84FFDB6421C85B3E003B2C70 /* GoogleService-Info.plist */,
+				84C20CAB21D5696D004AE5C5 /* Kickback-Bridging-Header.h */,
 			);
 			path = Kickback_1.0;
 			sourceTree = "<group>";
@@ -424,6 +430,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9624NHMA4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Kickback_1.0",
+				);
 				INFOPLIST_FILE = Kickback_1.0/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -431,6 +441,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LouDiMuro.Kickback-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickback_1.0/Kickback-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -443,6 +454,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G9624NHMA4;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Kickback_1.0",
+				);
 				INFOPLIST_FILE = Kickback_1.0/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,6 +465,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.LouDiMuro.Kickback-1-0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Kickback_1.0/Kickback-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
