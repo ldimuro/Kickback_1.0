@@ -312,6 +312,10 @@
                             <barButtonItem title="Users" image="users" id="WH5-Aa-Z9T"/>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="albumArt" destination="Vhy-3w-Ce8" id="y16-aq-HDJ"/>
+                        <outlet property="blurredAlbumArt" destination="eBs-6F-hz8" id="nL8-vG-uPq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Rq-i3-mCP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
