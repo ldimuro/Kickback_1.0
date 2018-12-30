@@ -52,7 +52,7 @@
 			<string>com.LouDiMuro.Kickback-1-0</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kickback2-start</string>
+				<string>kickbackLouD-start</string>
 			</array>
 		</dict>
 	</array>
