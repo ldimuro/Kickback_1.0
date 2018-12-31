@@ -15,21 +15,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     var window: UIWindow?
     
     let SpotifyClientID = "8a64ef11e63d47deb60042098a944a08"
-    let SpotifyRedirectURL = URL(string: "kickback2-start://kickback-callback/")!
+    let SpotifyRedirectURL = URL(string: "kickbackLouD-start://kickback-callback")!
+    var songName = ""
+    var artistName = ""
+    var songCode = ""
+    var albumArtCode = ""
     
-    lazy var configuration = SPTConfiguration(
-        clientID: SpotifyClientID,
-        redirectURL: SpotifyRedirectURL
-    )
+    lazy var configuration: SPTConfiguration = {
+        let configuration = SPTConfiguration(clientID: SpotifyClientID, redirectURL: SpotifyRedirectURL)
+        // Set the playURI to a non-nil value so that Spotify plays music after authenticating and App Remote can connect
+        // otherwise another app switch will be required
+        configuration.playURI = ""
+        
+        // Set these url's to your backend which contains the secret to exchange for an access token
+        // You can use the provided ruby script spotify_token_swap.rb for testing purposes
+        configuration.tokenSwapURL = URL(string: "https://cliff-sagittarius.glitch.me/api/token")
+        configuration.tokenRefreshURL = URL(string: "https://cliff-sagittarius.glitch.me/api/refresh_token")
+        
+        return configuration
+    }()
     
     lazy var sessionManager: SPTSessionManager = {
-        if let tokenSwapURL = URL(string: "https://cliff-sagittarius.glitch.me/api/token"),
-            let tokenRefreshURL = URL(string: "https://cliff-sagittarius.glitch.me/api/refresh_token") {
-            self.configuration.tokenSwapURL = tokenSwapURL
-            self.configuration.tokenRefreshURL = tokenRefreshURL
-            self.configuration.playURI = ""
-        }
-        let manager = SPTSessionManager(configuration: self.configuration, delegate: self)
+        let manager = SPTSessionManager(configuration: configuration, delegate: self)
         return manager
     }()
     
@@ -44,40 +51,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
         FirebaseApp.configure()
         
-        let x = true
-        
-        if x {
-            let requestedScopes: SPTScope = [.appRemoteControl]
-            self.sessionManager.initiateSession(with: requestedScopes, options: .default)
-            
-            print("MUSIC STARTS")
-        }
+//        let x = true
+//
+//        if x {
+//            let requestedScopes: SPTScope = [.appRemoteControl]
+//
+//            self.sessionManager.initiateSession(with: requestedScopes, options: .default)
+//
+//            print("MUSIC STARTS")
+//        }
         
         return true
     }
     
+    func initiateSession() {
+        let requestedScopes: SPTScope = [.appRemoteControl]
+        self.sessionManager.initiateSession(with: requestedScopes, options: .default)
+        print("MUSIC STARTS")
+    }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("Got em")
         self.sessionManager.application(app, open: url, options: options)
+        
         return true
     }
     
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
-        print("Initiated Successfully", session)
-//        accessToken = session.accessToken
+        print("INITIATED SUCCESSFULLY", session)
         
         self.appRemote.connectionParameters.accessToken = session.accessToken
+        
         self.appRemote.connect()
+        
     }
+    
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
-        print("fail", error)
+        print("SESSION FAILED", error)
     }
+    
     func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
-        print("renewed", session)
+        print("RENEWED", session)
     }
 
     func appRemoteDidEstablishConnection(_ appRemote: SPTAppRemote) {
-        print("Connection Established")
+        print("CONNECTION ESTABLISHED")
 
         self.appRemote.playerAPI?.delegate = self
         self.appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
@@ -95,12 +112,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }
     
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
-        print("disconnected")
+        print("DISCONNECTED", error!)
     }
 
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
-        print("failed")
+        print("FAILED CONNECTION ATTEMPT", error!)
     }
+    
+    
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("player state changed")
@@ -115,13 +134,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         print("playbackOptions.isShuffling", playerState.playbackOptions.isShuffling)
         print("playbackOptions.repeatMode", playerState.playbackOptions.repeatMode.hashValue)
         print("playbackPosition", playerState.playbackPosition)
+        
+        songName = playerState.track.name
+        songCode = playerState.track.uri
+        artistName = playerState.track.artist.name
+        albumArtCode = playerState.track.album.uri
+        
+        NowPlayingData.songName = songName
+        NowPlayingData.songCode = songCode
+        NowPlayingData.artistName = artistName
+        NowPlayingData.albumCoverCode = albumArtCode
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         
-        print("Resign active")
+        print("RESIGN ACTIVE")
         
         if self.appRemote.isConnected {
             self.appRemote.disconnect()
@@ -140,10 +170,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-        print("Did become active")
-        
-        if let _ = self.appRemote.connectionParameters.accessToken {
-            self.appRemote.connect()
+//        appRemote.delegate = self
+//
+        if let _ = appRemote.connectionParameters.accessToken {
+            print("BECAME ACTIVE") // DOES print
+
+            DispatchQueue.main.async {[weak self] in
+                self?.appRemote.connect()
+            }
         }
     }
 
@@ -152,6 +186,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }
 
 
+}
+
+struct NowPlayingData {
+    static var songName = ""
+    static var songCode = ""
+    static var artistName = ""
+    static var albumCoverCode = ""
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around
