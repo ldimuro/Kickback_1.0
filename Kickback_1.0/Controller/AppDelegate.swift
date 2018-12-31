@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import Alamofire
+import SwiftyJSON
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate, SPTAppRemoteDelegate, SPTAppRemotePlayerStateDelegate {
@@ -19,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     var songName = ""
     var artistName = ""
     var songCode = ""
-    var albumArtCode = ""
+    var albumArtURL = ""
+    var accessToken = ""
     
     lazy var configuration: SPTConfiguration = {
         let configuration = SPTConfiguration(clientID: SpotifyClientID, redirectURL: SpotifyRedirectURL)
@@ -80,8 +83,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         print("INITIATED SUCCESSFULLY", session)
         
         self.appRemote.connectionParameters.accessToken = session.accessToken
-        
         self.appRemote.connect()
+        
+        accessToken = session.accessToken
         
     }
     
@@ -118,8 +122,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
         print("FAILED CONNECTION ATTEMPT", error!)
     }
-    
-    
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("player state changed")
@@ -138,12 +140,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         songName = playerState.track.name
         songCode = playerState.track.uri
         artistName = playerState.track.artist.name
-        albumArtCode = playerState.track.album.uri
         
         NowPlayingData.songName = songName
         NowPlayingData.songCode = songCode
         NowPlayingData.artistName = artistName
-        NowPlayingData.albumCoverCode = albumArtCode
+        
+        let albumID = playerState.track.album.uri.replacingOccurrences(of: "spotify:album:", with: "")
+        
+        getAlbumArt(albumID: albumID)
+        
+    }
+    
+    func getAlbumArt(albumID: String) {
+        
+        let header = ["Authorization": "Bearer \(accessToken)"]
+        let getAlbumArt = "https://api.spotify.com/v1/albums/" + albumID
+        
+        print(getAlbumArt)
+        
+        Alamofire.request(getAlbumArt, method: .get, parameters: [:], headers: header)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    
+//                    print("Success! Got the data")
+                    let dataJSON : JSON = JSON(response.result.value!)
+                    
+                    if let url = dataJSON["images"][0]["url"].string {
+                        self.albumArtURL = url
+                        NowPlayingData.albumCoverURL = url
+                        
+                        print("URL: \(url)")
+                    }
+                    
+                } else {
+                    print("Error: \(String(describing: response.result.error!))")
+                }
+        }
+        
         
     }
 
@@ -192,7 +225,7 @@ struct NowPlayingData {
     static var songName = ""
     static var songCode = ""
     static var artistName = ""
-    static var albumCoverCode = ""
+    static var albumCoverURL = ""
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around
