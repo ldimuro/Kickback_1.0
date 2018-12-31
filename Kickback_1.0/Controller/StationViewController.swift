@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import Kingfisher
+import LoadingPlaceholderView
 
 class StationViewController: UIViewController, UIApplicationDelegate {
     
@@ -28,14 +29,20 @@ class StationViewController: UIViewController, UIApplicationDelegate {
     var songName = ""
     var songCode = ""
     var artistName = ""
-    var albumArtCode = ""
+    var albumArtURL = ""
+    let loadingPlaceholderView = LoadingPlaceholderView()
 
     //MARK: VIEW DID LOAD/APPEAR
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.title = stationPin
+        
+        loadingPlaceholderView.gradientColor = .white
+        loadingPlaceholderView.backgroundColor = .white
+        loadingPlaceholderView.cover(view, animated: true)
+//        loadingPlaceholderView.cover(albumArt, animated: true)
         
     }
     
@@ -61,23 +68,23 @@ class StationViewController: UIViewController, UIApplicationDelegate {
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
                 
+                self.loadingPlaceholderView.uncover(animated: true)
+                
                 self.songName = NowPlayingData.songName
                 self.songCode = NowPlayingData.songCode
                 self.artistName = NowPlayingData.artistName
-                self.albumArtCode = NowPlayingData.albumCoverCode
+                self.albumArtURL = NowPlayingData.albumCoverURL
                 
                 self.songNameLabel.text = self.songName
                 self.artistLabel.text = self.artistName
                 
-                let url = URL(string: self.albumArtCode)
+                let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
                 self.blurredAlbumArt.kf.setImage(with: url)
                 
                 
+                
             })
-            
-            
-            
         }
     }
     
