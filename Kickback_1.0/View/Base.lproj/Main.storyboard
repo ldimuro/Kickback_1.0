@@ -91,7 +91,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="js2-Id-dmL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="• • • •" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="js2-Id-dmL">
                                 <rect key="frame" x="16" y="146" width="343" height="66"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="50"/>
@@ -314,7 +314,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="albumArt" destination="Vhy-3w-Ce8" id="y16-aq-HDJ"/>
+                        <outlet property="artistLabel" destination="9kT-Jt-Xlg" id="M3H-I5-ShI"/>
                         <outlet property="blurredAlbumArt" destination="eBs-6F-hz8" id="nL8-vG-uPq"/>
+                        <outlet property="songNameLabel" destination="Sb2-ez-9hE" id="swc-df-XeM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Rq-i3-mCP" userLabel="First Responder" sceneMemberID="firstResponder"/>

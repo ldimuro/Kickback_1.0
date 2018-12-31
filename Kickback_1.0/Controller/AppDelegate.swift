@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     
     let SpotifyClientID = "8a64ef11e63d47deb60042098a944a08"
     let SpotifyRedirectURL = URL(string: "kickbackLouD-start://kickback-callback")!
+    var songName = ""
+    var artistName = ""
+    var songCode = ""
+    var albumArtCode = ""
     
     lazy var configuration: SPTConfiguration = {
         let configuration = SPTConfiguration(clientID: SpotifyClientID, redirectURL: SpotifyRedirectURL)
@@ -47,17 +51,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
         FirebaseApp.configure()
         
-        let x = true
-        
-        if x {
-            let requestedScopes: SPTScope = [.appRemoteControl]
-            
-            self.sessionManager.initiateSession(with: requestedScopes, options: .default)
-            
-            print("MUSIC STARTS")
-        }
+//        let x = true
+//
+//        if x {
+//            let requestedScopes: SPTScope = [.appRemoteControl]
+//
+//            self.sessionManager.initiateSession(with: requestedScopes, options: .default)
+//
+//            print("MUSIC STARTS")
+//        }
         
         return true
+    }
+    
+    func initiateSession() {
+        let requestedScopes: SPTScope = [.appRemoteControl]
+        self.sessionManager.initiateSession(with: requestedScopes, options: .default)
+        print("MUSIC STARTS")
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -71,10 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
         self.appRemote.connectionParameters.accessToken = session.accessToken
         
-        //DELAYS FOR A SECOND TO GIVE TIME TO COMMUNICATE INFORMATION WITH SERVER
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // in a second...
-            self.appRemote.connect()
-        }
+        self.appRemote.connect()
         
     }
     
@@ -111,6 +118,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
         print("FAILED CONNECTION ATTEMPT", error!)
     }
+    
+    
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("player state changed")
@@ -125,6 +134,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         print("playbackOptions.isShuffling", playerState.playbackOptions.isShuffling)
         print("playbackOptions.repeatMode", playerState.playbackOptions.repeatMode.hashValue)
         print("playbackPosition", playerState.playbackPosition)
+        
+        songName = playerState.track.name
+        songCode = playerState.track.uri
+        artistName = playerState.track.artist.name
+        albumArtCode = playerState.track.album.uri
+        
+        NowPlayingData.songName = songName
+        NowPlayingData.songCode = songCode
+        NowPlayingData.artistName = artistName
+        NowPlayingData.albumCoverCode = albumArtCode
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -152,13 +172,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
 //        appRemote.delegate = self
 //
-//        if let _ = appRemote.connectionParameters.accessToken {
-//            print("BECAME ACTIVE") // DOES print
-//
-//            DispatchQueue.main.async {[weak self] in
-//                self?.appRemote.connect()
-//            }
-//        }
+        if let _ = appRemote.connectionParameters.accessToken {
+            print("BECAME ACTIVE") // DOES print
+
+            DispatchQueue.main.async {[weak self] in
+                self?.appRemote.connect()
+            }
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -166,6 +186,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }
 
 
+}
+
+struct NowPlayingData {
+    static var songName = ""
+    static var songCode = ""
+    static var artistName = ""
+    static var albumCoverCode = ""
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around
