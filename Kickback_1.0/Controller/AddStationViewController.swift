@@ -23,28 +23,36 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getPlaylists()
+//        getPlaylists()
         
         playlistTable.delegate = self
         playlistTable.dataSource = self
-        playlistTable.tableFooterView = UIView()
+//        playlistTable.tableFooterView = UIView()
         
         self.navigationItem.rightBarButtonItem?.isEnabled = false
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         let formattedPin = randomPin()
-        
         pin = formattedPin.replacingOccurrences(of: " ", with: "") // get rid of the spaces in-between each character
-        
         pinLabel.text = formattedPin
+        
+        AppDelegate().initiateSession() // Start playing Spotify music
+        
+        
+//        print("USER PLAYLISTS: \(UserData.playlists.count)")
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = playlistTable.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath)
         
-        cell.textLabel?.text = playlistArray[indexPath.row].name
-        cell.detailTextLabel?.text = playlistArray[indexPath.row].genre
+        cell.textLabel?.text = UserData.playlists[indexPath.row].name
+        cell.detailTextLabel?.text = UserData.playlists[indexPath.row].owner
+        
+//        cell.textLabel?.text = playlistArray[indexPath.row].name
+//        cell.detailTextLabel?.text = playlistArray[indexPath.row].genre
         
         //Check to see if a playlist has been selected
         if playlistArray[indexPath.row].added == true {
@@ -60,7 +68,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return playlistArray.count
+        return UserData.playlists.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

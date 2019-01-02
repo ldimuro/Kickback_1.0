@@ -64,7 +64,7 @@ class StationViewController: UIViewController, UIApplicationDelegate {
             }
         }
         else {
-            AppDelegate().initiateSession()
+//            AppDelegate().initiateSession()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
                 
@@ -81,9 +81,6 @@ class StationViewController: UIViewController, UIApplicationDelegate {
                 let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
                 self.blurredAlbumArt.kf.setImage(with: url)
-                
-                
-                
             })
         }
     }
@@ -97,7 +94,6 @@ class StationViewController: UIViewController, UIApplicationDelegate {
         //If user is owner of the station and leaves, the entire station is removed
         if isOwner {
             optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
-                print("Left Station, access token = \(self.accessToken)")
                 
 //                self.appRemote.playerAPI?.pause(nil)    // Pause Spotify
 //                self.appRemote.disconnect()             // Disconnect from Spotify
