@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }
     
     func initiateSession() {
-        let requestedScopes: SPTScope = [.appRemoteControl]
+        let requestedScopes: SPTScope = [.appRemoteControl, .playlistReadPrivate, .playlistReadCollaborative]
         self.sessionManager.initiateSession(with: requestedScopes, options: .default)
         print("MUSIC STARTS")
     }
@@ -86,6 +86,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         self.appRemote.connect()
         
         accessToken = session.accessToken
+        UserData.accessToken = session.accessToken
+        
+        //GET USER PLAYLISTS
+        let header = ["Authorization": "Bearer \(accessToken)"]
+        
+        Alamofire.request("https://api.spotify.com/v1/me/playlists", method: .get, parameters: [:], headers: header)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    
+                    print("Success! Got the data")
+                    let dataJSON : JSON = JSON(response.result.value!)
+                    
+                    self.getPlaylists(json: dataJSON)
+                    
+                }
+                else {
+                    print("Error: \(String(describing: response.result.error!))")
+                }
+        }
         
     }
     
@@ -101,11 +120,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         print("CONNECTION ESTABLISHED")
 
         self.appRemote.playerAPI?.delegate = self
+        self.appRemote.playerAPI?.pause(nil) // Pause Spotify
         self.appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
             }
         })
+        
+        
 
         // Want to play a new track?
         // self.appRemote.playerAPI?.play("spotify:track:13WO20hoD72L0J13WTQWlT", callback: { (result, error) in
@@ -176,8 +198,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                     print("Error: \(String(describing: response.result.error!))")
                 }
         }
+    }
+    
+    func getPlaylists(json: JSON) {
         
+        var x = 0
         
+        while (json["items"][x]["name"].string != nil) {
+            
+            let playlist = Playlist()
+            
+            let name = json["items"][x]["name"].string!
+            let owner = json["items"][x]["owner"]["id"].string!
+            let songs = json["items"][x]["tracks"]["href"].string!
+            let id = json["items"][x]["id"].string!
+            let totalSongs = json["items"][x]["tracks"]["total"].int!
+            
+            playlist.name = name
+            playlist.owner = owner
+            playlist.id = id
+            playlist.songs = songs
+            playlist.totalSongs = totalSongs
+            
+            UserData.playlists.append(playlist)
+            
+//            print("#\(x). \(playlist.name) - \(playlist.owner)")
+            
+            x += 1
+            
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -226,6 +275,11 @@ struct NowPlayingData {
     static var songCode = ""
     static var artistName = ""
     static var albumCoverURL = ""
+}
+
+struct UserData {
+    static var playlists = [Playlist]()
+    static var accessToken : String?
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around
