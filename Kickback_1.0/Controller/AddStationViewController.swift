@@ -11,6 +11,7 @@ import Firebase
 import Alamofire
 import AlamofireObjectMapper
 import SwiftyJSON
+import LoadingPlaceholderView
 
 class AddStationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -18,6 +19,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var playlistTable: UITableView!
     
     var pin: String?
+    var loadingPlaceholderView = LoadingPlaceholderView()
     let data = ["Lou's Playlist", "for you", "Wine Night", "Discover Weekly", "Sleep", "Mindmelt"]
     let genre = ["Indie", "Pop", "Indietronica", "Indie Rock", "Chill", "Psychedelic"]
     var playlistArray = [AddPlaylist]()
@@ -32,7 +34,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         playlistTable.delegate = self
         playlistTable.dataSource = self
-        playlistTable.tableFooterView = UIView()
+//        playlistTable.tableFooterView = UIView()
         
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
@@ -49,10 +51,10 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         // PAUSE FOR 4 SECONDS TO ALLOW TIME FOR COMMUNICATION WITH FIREBASE
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             
-//            repeat {
-////                print("USER PLAYLISTS: \(UserData.playlists.count)")
-//                self.playlistTable.reloadData()
-//            } while UserData.accessToken == nil
+            repeat {
+//                print("USER PLAYLISTS: \(UserData.playlists.count)")
+                self.playlistTable.reloadData()
+            } while UserData.accessToken == nil
             
             self.getAllSongs(offset: self.defaultOffset)
         }

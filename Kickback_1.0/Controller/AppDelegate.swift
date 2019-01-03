@@ -90,8 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
         //GET USER PLAYLISTS
         let header = ["Authorization": "Bearer \(accessToken)"]
+        let parameters = ["limit": "50"]
         
-        Alamofire.request("https://api.spotify.com/v1/me/playlists", method: .get, parameters: [:], headers: header)
+        Alamofire.request("https://api.spotify.com/v1/me/playlists", method: .get, parameters: parameters, headers: header)
             .responseJSON { response in
                 if response.result.isSuccess {
                     
@@ -222,7 +223,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
             
             UserData.playlists.append(playlist)
             
-//            print("#\(x). \(playlist.name) - \(playlist.owner)")
+            print("#\(x). \(playlist.name) - \(playlist.owner)")
             
             x += 1
             
