@@ -210,11 +210,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
             
             let name = json["items"][x]["name"].string!
             let owner = json["items"][x]["owner"]["id"].string!
-            let href = json["items"][x]["tracks"]["href"].string!
+            let songs = json["items"][x]["tracks"]["href"].string!
+            let id = json["items"][x]["id"].string!
+            let totalSongs = json["items"][x]["tracks"]["total"].int!
             
             playlist.name = name
             playlist.owner = owner
-            playlist.href = href
+            playlist.id = id
+            playlist.songs = songs
+            playlist.totalSongs = totalSongs
             
             UserData.playlists.append(playlist)
             

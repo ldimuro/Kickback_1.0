@@ -11,6 +11,8 @@ import Foundation
 class Playlist {
     var name : String = ""
     var owner : String = ""
-    var songs  = [String]()
-    var href : String = ""
+    var songs : String = ""
+    var id : String = ""
+    var totalSongs = 0
+    var added = false
 }
