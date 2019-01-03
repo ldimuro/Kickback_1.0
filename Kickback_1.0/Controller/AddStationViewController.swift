@@ -22,25 +22,39 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     var loadingPlaceholderView = LoadingPlaceholderView()
     let data = ["Lou's Playlist", "for you", "Wine Night", "Discover Weekly", "Sleep", "Mindmelt"]
     let genre = ["Indie", "Pop", "Indietronica", "Indie Rock", "Chill", "Psychedelic"]
-    var playlistArray = [AddPlaylist]()
-    var selectedPlaylists = [String]()
+//    var playlistArray = [AddPlaylist]()
+    var arrayOfPlaylists = [[String : Any]]()
+    var selectedPlaylists = [Playlist]()
+//    var songArray = [Song]()
+    var songDictArray = [[String : Any]]()
     var defaultOffset = 0
     var defaultLimit = 100
+    var playlistCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        getPlaylists()
-        
         playlistTable.delegate = self
         playlistTable.dataSource = self
 //        playlistTable.tableFooterView = UIView()
+        
+        // Initialize all playlists to be unchosen on loading
+        for each in UserData.playlists {
+            each.added = false
+        }
         
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        selectedPlaylists.removeAll()
+        songDictArray.removeAll()
+        arrayOfPlaylists.removeAll()
+        UserData.songs.removeAll()
+        UserData.playlists.removeAll()
+        UserData.queue.removeAll()
         
         let formattedPin = randomPin()
         pin = formattedPin.replacingOccurrences(of: " ", with: "") // get rid of the spaces in-between each character
@@ -49,14 +63,13 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         AppDelegate().initiateSession() // Start playing Spotify music
         
         // PAUSE FOR 4 SECONDS TO ALLOW TIME FOR COMMUNICATION WITH FIREBASE
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             
             repeat {
-//                print("USER PLAYLISTS: \(UserData.playlists.count)")
                 self.playlistTable.reloadData()
             } while UserData.accessToken == nil
             
-            self.getAllSongs(offset: self.defaultOffset)
+//            self.getAllSongs(offset: self.defaultOffset, id: )
         }
         
         
@@ -71,7 +84,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
 //        cell.textLabel?.text = playlistArray[indexPath.row].name
 //        cell.detailTextLabel?.text = playlistArray[indexPath.row].genre
         
-        //Check to see if a playlist has been selected
+        // Check to see if a playlist has been selected
         if UserData.playlists[indexPath.row].added == true {
             cell.accessoryType = .checkmark
         }
@@ -93,12 +106,20 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         UserData.playlists[indexPath.row].added = !UserData.playlists[indexPath.row].added
         
         if UserData.playlists[indexPath.row].added {
-            selectedPlaylists.append(UserData.playlists[indexPath.row].name)
+            
+            let newPlaylist = Playlist()
+            
+            newPlaylist.name = UserData.playlists[indexPath.row].name
+            newPlaylist.owner = UserData.playlists[indexPath.row].owner
+            newPlaylist.totalSongs = UserData.playlists[indexPath.row].totalSongs
+            newPlaylist.id = UserData.playlists[indexPath.row].id
+            
+            selectedPlaylists.append(newPlaylist)
         } else {
-            selectedPlaylists = selectedPlaylists.filter {$0 != UserData.playlists[indexPath.row].name}
+            selectedPlaylists = selectedPlaylists.filter {$0.id != UserData.playlists[indexPath.row].id}
         }
         
-        //Fade the Create button if there aren't any playlists selected
+        // Fade the Create button if there aren't any playlists selected
         if selectedPlaylists.count != 0 {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
@@ -118,7 +139,12 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         self.performSegue(withIdentifier: "ownerStation", sender: self)
 //        dismiss(animated: false, completion: nil)
         
-        saveStation()
+        // Loops through all selected playlists and grabs all the songs from each
+        for playlist in selectedPlaylists {
+            getAllSongs(offset: defaultOffset, playlist: playlist)
+        }
+        
+//        saveStation()
         
     }
     
@@ -144,40 +170,72 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func getAllSongs(offset: Int) {
+    func getAllSongs(offset: Int, playlist: Playlist) {
         let header = ["Authorization": "Bearer \(UserData.accessToken!)"]
         let parameters = ["offset": "\(offset)"]
         
-//        for x in 0..<UserData.playlists.count {
-            Alamofire.request("https://api.spotify.com/v1/playlists/\(UserData.playlists[13].id)/tracks", method: .get, parameters: parameters, headers: header)
-                .responseArray(keyPath: "items") { (response: DataResponse<[Song]>) in
-                    if response.result.isSuccess {
+        Alamofire.request("https://api.spotify.com/v1/playlists/\(playlist.id)/tracks", method: .get, parameters: parameters, headers: header)
+            .responseArray(keyPath: "items") { (response: DataResponse<[Song]>) in
+                if response.result.isSuccess {
+                    
+                    print("Success! Getting next 100 songs for '\(playlist.name)'")
+                    
+                    let songArray = response.result.value!;
+                    
+                    // Get next 100 songs for the playlist (Spotify has a 100-song request limit for their API)
+                    var count = offset + 1
+                    for song in songArray {
                         
-                        print("Success! Getting next 100 songs for '\(UserData.playlists[13].name)'")
+                        // Creates a new dictionary of the song and add it to an array
+                        let songDict = ["Name": "\(song.name!)",
+                                        "Artist": "\(song.artist!)",
+                                        "ID": "\(song.id!)",
+                                        "User": "ldimuro"] as [String : Any]
                         
-                        let songArray = response.result.value!;
+//                        self.songDictArray.append(songDict)
+                        playlist.songDict.append(songDict)
                         
-                        // Get next 100 songs for the playlist (Spotify has a 100-song request limit for their API)
-                        var count = offset + 1
-                        for song in songArray {
-                            print("\(count).\t\"\(song.name!)\" - \(song.artist!) (\(song.id!))")
-                            count += 1
-                        }
+                        // Creates a new instance of the Song class and adds it to UserData songs
+                        let newSong = Song()
+                        newSong.name = song.name
+                        newSong.artist = song.artist
+                        newSong.id = song.id
+                        newSong.owner = "ldimuro"
                         
-                        // If 100 songs have been grabbed but there are still songs remaining in the playlist
-                        if (UserData.playlists[13].totalSongs - offset) > self.defaultLimit {
-                            self.getAllSongs(offset: offset + 100)
-                        }
-                        else {
-                            print("Got all songs for '\(UserData.playlists[13].name)'")
-                        }
+                        UserData.songs.append(newSong)
+                        playlist.songs.append(newSong)
                         
+                        print("\(count).\t\(newSong.name!) - \(newSong.artist!)")
+                        
+                        count += 1
+                    }
+                    
+                    // If 100 songs have been grabbed but there are still songs remaining in the playlist
+                    if (playlist.totalSongs - offset) > self.defaultLimit {
+                        self.getAllSongs(offset: offset + 100, playlist: playlist)
                     }
                     else {
-                        print("Error: \(String(describing: response.result.error!))")
+                        print("Got all songs for '\(playlist.name)'")
+                        self.playlistCount += 1
+                        
+                        let playlistDict = ["Name": playlist.name,
+                                            "Songs": playlist.songDict,
+                                            "ID": playlist.id,
+                                            "Owner": "ldimuro"] as [String : Any]
+                        
+                        self.arrayOfPlaylists.append(playlistDict)
+                        
+                        // When all playlists have been processed
+                        if self.playlistCount >= self.selectedPlaylists.count {
+                            print("GOT ALL PLAYLISTS")
+                            self.saveStation()
+                        }
                     }
-            }
-//        }
+                }
+                else {
+                    print("Error: \(String(describing: response.result.error!))")
+                }
+        }
     }
     
     //Save station to Firebase
@@ -185,28 +243,12 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let addStation = Database.database().reference().child("Stations")
         let timestamp = "\(Date())"
-        var arrayOfPlaylists = [[String : Any]]()
-        
-        let songDict = ["Name": "Say It Ain't So",
-                        "Artist": "Weezer",
-                        "ID": "Jdjs9Djs",
-                        "User": "ldimuro"] as [String : Any]
-        
-        //Iterates through each selected playlist and creates an array of playlist dictionaries
-        for each in selectedPlaylists {
-            let playlistDict = ["Name": each,
-                                "Songs": [songDict, songDict, songDict, songDict],
-                                "ID": "aDfs45gsD",
-                                "Owner": "ldimuro"] as [String : Any]
-            
-            arrayOfPlaylists.append(playlistDict)
-        }
         
         //The final dictionary of station
         let postDictionary = ["Owner": "ldimuro",
                               "Users": [],
                               "Playlists": arrayOfPlaylists,
-                              "Queue": [songDict, songDict, songDict, songDict],
+                              "Queue": [],
                               "Timestamp": timestamp] as [String : Any]
         
         addStation.child(pin!).setValue(postDictionary) {
@@ -217,21 +259,32 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             else {
                 print("Station saved successfully")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.generateInitQueue()
+                }
             }
         }
     }
     
-//    func getPlaylists() {
-//
-//        for x in 0..<data.count {
-//            let playlist = AddPlaylist()
-//
-//            playlist.name = data[x]
-//            playlist.genre = genre[x]
-//            playlist.added = false
-//
-//            playlistArray.append(playlist)
-//        }
-//    }
+    func generateInitQueue() {
+        var remainingSongs = UserData.songs
+        var queue = [Song]()
+        
+        print("\nQUEUE:")
+        
+        while remainingSongs.count > 0 {
+            let randomNum = Int.random(in: 0...(remainingSongs.count - 1))
+            queue.append(remainingSongs[randomNum])
+            
+            print("\(remainingSongs[randomNum].name!) - \(remainingSongs[randomNum].artist!)")
+            
+            remainingSongs.remove(at: randomNum)
+        }
+        
+        print("FINISHED BUILDING QUEUE")
+        
+        UserData.queue = queue
+    }
     
 }

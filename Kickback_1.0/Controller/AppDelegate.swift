@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
             playlist.name = name
             playlist.owner = owner
             playlist.id = id
-            playlist.songs = songs
+//            playlist.songs = songs
             playlist.totalSongs = totalSongs
             
             UserData.playlists.append(playlist)
@@ -280,6 +280,8 @@ struct NowPlayingData {
 
 struct UserData {
     static var playlists = [Playlist]()
+    static var songs = [Song]()
+    static var queue = [Song]()
     static var accessToken : String?
 }
 
