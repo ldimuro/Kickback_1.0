@@ -20,6 +20,7 @@ class StationViewController: UIViewController, UIApplicationDelegate {
     @IBOutlet weak var blurredAlbumArt: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var nowPlayingView: UIView!
     let username = "testUser"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
@@ -41,7 +42,7 @@ class StationViewController: UIViewController, UIApplicationDelegate {
         
         loadingPlaceholderView.gradientColor = .white
         loadingPlaceholderView.backgroundColor = .white
-        loadingPlaceholderView.cover(view, animated: true)
+        loadingPlaceholderView.cover(nowPlayingView, animated: true)
 //        loadingPlaceholderView.cover(albumArt, animated: true)
         
     }
