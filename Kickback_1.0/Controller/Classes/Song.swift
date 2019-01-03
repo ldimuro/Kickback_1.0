@@ -14,6 +14,14 @@ class Song: Mappable {
     var name : String?
     var artist : String?
     var id : String?
+    var owner : String?
+    
+    init() {
+        self.name = nil
+        self.artist = nil
+        self.id = nil
+        self.owner = nil
+    }
     
     required init?(map: Map) {
         
