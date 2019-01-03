@@ -22,7 +22,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     var loadingPlaceholderView = LoadingPlaceholderView()
     let data = ["Lou's Playlist", "for you", "Wine Night", "Discover Weekly", "Sleep", "Mindmelt"]
     let genre = ["Indie", "Pop", "Indietronica", "Indie Rock", "Chill", "Psychedelic"]
-    var playlistArray = [AddPlaylist]()
+//    var playlistArray = [AddPlaylist]()
     var arrayOfPlaylists = [[String : Any]]()
     var selectedPlaylists = [Playlist]()
 //    var songArray = [Song]()
@@ -33,8 +33,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        getPlaylists()
         
         playlistTable.delegate = self
         playlistTable.dataSource = self
@@ -51,6 +49,13 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidAppear(_ animated: Bool) {
         
+        selectedPlaylists.removeAll()
+        songDictArray.removeAll()
+        arrayOfPlaylists.removeAll()
+        UserData.songs.removeAll()
+        UserData.playlists.removeAll()
+        UserData.queue.removeAll()
+        
         let formattedPin = randomPin()
         pin = formattedPin.replacingOccurrences(of: " ", with: "") // get rid of the spaces in-between each character
         pinLabel.text = formattedPin
@@ -58,7 +63,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         AppDelegate().initiateSession() // Start playing Spotify music
         
         // PAUSE FOR 4 SECONDS TO ALLOW TIME FOR COMMUNICATION WITH FIREBASE
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             
             repeat {
                 self.playlistTable.reloadData()
@@ -226,7 +231,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                             self.saveStation()
                         }
                     }
-                    
                 }
                 else {
                     print("Error: \(String(describing: response.result.error!))")
@@ -239,25 +243,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let addStation = Database.database().reference().child("Stations")
         let timestamp = "\(Date())"
-//        var arrayOfPlaylists = [[String : Any]]()
-        
-//        let songDict = ["Name": "Say It Ain't So",
-//                        "Artist": "Weezer",
-//                        "ID": "Jdjs9Djs",
-//                        "User": "ldimuro"] as [String : Any]
-        
-        //Iterates through each selected playlist and creates an array of playlist dictionaries
-//        for each in selectedPlaylists {
-//
-//            let playlistDict = ["Name": each.name,
-//                                "Songs": each.songDict,
-//                                "ID": each.id,
-//                                "Owner": "ldimuro"] as [String : Any]
-//
-//            arrayOfPlaylists.append(playlistDict)
-//        }
-        
-        debugPrint(arrayOfPlaylists)
         
         //The final dictionary of station
         let postDictionary = ["Owner": "ldimuro",
@@ -274,21 +259,32 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             else {
                 print("Station saved successfully")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.generateInitQueue()
+                }
             }
         }
     }
     
-//    func getPlaylists() {
-//
-//        for x in 0..<data.count {
-//            let playlist = AddPlaylist()
-//
-//            playlist.name = data[x]
-//            playlist.genre = genre[x]
-//            playlist.added = false
-//
-//            playlistArray.append(playlist)
-//        }
-//    }
+    func generateInitQueue() {
+        var remainingSongs = UserData.songs
+        var queue = [Song]()
+        
+        print("\nQUEUE:")
+        
+        while remainingSongs.count > 0 {
+            let randomNum = Int.random(in: 0...(remainingSongs.count - 1))
+            queue.append(remainingSongs[randomNum])
+            
+            print("\(remainingSongs[randomNum].name!) - \(remainingSongs[randomNum].artist!)")
+            
+            remainingSongs.remove(at: randomNum)
+        }
+        
+        print("FINISHED BUILDING QUEUE")
+        
+        UserData.queue = queue
+    }
     
 }

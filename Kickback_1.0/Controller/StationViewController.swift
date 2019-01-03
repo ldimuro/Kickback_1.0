@@ -12,7 +12,7 @@ import FirebaseStorage
 import Kingfisher
 import LoadingPlaceholderView
 
-class StationViewController: UIViewController, UIApplicationDelegate {
+class StationViewController: UIViewController, UIApplicationDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: VARIABLES
     
@@ -21,6 +21,7 @@ class StationViewController: UIViewController, UIApplicationDelegate {
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var nowPlayingView: UIView!
+    @IBOutlet weak var queueTableView: UITableView!
     let username = "testUser"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
@@ -39,6 +40,9 @@ class StationViewController: UIViewController, UIApplicationDelegate {
         super.viewDidLoad()
         
         self.title = stationPin
+        
+        queueTableView.delegate = self
+        queueTableView.dataSource = self
         
         loadingPlaceholderView.gradientColor = .white
         loadingPlaceholderView.backgroundColor = .white
@@ -82,8 +86,28 @@ class StationViewController: UIViewController, UIApplicationDelegate {
                 let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
                 self.blurredAlbumArt.kf.setImage(with: url)
+                
+                self.queueTableView.reloadData()
             })
         }
+    }
+    
+    //MARK: TABLE VIEW
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return UserData.queue.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = queueTableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath)
+        
+        cell.textLabel?.text = UserData.queue[indexPath.row].name
+        cell.detailTextLabel?.text = UserData.queue[indexPath.row].artist
+        
+        cell.selectionStyle = .none
+        
+        return cell
     }
     
     //MARK: BUTTONS

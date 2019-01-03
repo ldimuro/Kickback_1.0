@@ -281,6 +281,7 @@ struct NowPlayingData {
 struct UserData {
     static var playlists = [Playlist]()
     static var songs = [Song]()
+    static var queue = [Song]()
     static var accessToken : String?
 }
 
