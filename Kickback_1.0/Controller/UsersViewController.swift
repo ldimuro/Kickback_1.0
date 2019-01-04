@@ -59,9 +59,6 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
             }
         }
-        
-        
-        
     }
     
     
