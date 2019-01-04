@@ -148,20 +148,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("player state changed")
-        print("isPaused", playerState.isPaused)
-        print("track.uri", playerState.track.uri)
+//        print("isPaused", playerState.isPaused)
+//        print("track.uri", playerState.track.uri)
         print("track.name", playerState.track.name)
-        print("track.imageIdentifier", playerState.track.imageIdentifier)
+//        print("track.imageIdentifier", playerState.track.imageIdentifier)
         print("track.artist.name", playerState.track.artist.name)
-        print("track.album.name", playerState.track.album.name)
-        print("track.isSaved", playerState.track.isSaved)
-        print("playbackSpeed", playerState.playbackSpeed)
-        print("playbackOptions.isShuffling", playerState.playbackOptions.isShuffling)
-        print("playbackOptions.repeatMode", playerState.playbackOptions.repeatMode.hashValue)
-        print("playbackPosition", playerState.playbackPosition)
+//        print("track.album.name", playerState.track.album.name)
+//        print("track.isSaved", playerState.track.isSaved)
+//        print("playbackSpeed", playerState.playbackSpeed)
+//        print("playbackOptions.isShuffling", playerState.playbackOptions.isShuffling)
+//        print("playbackOptions.repeatMode", playerState.playbackOptions.repeatMode.hashValue)
+//        print("playbackPosition", playerState.playbackPosition)
         
         songName = playerState.track.name
-        songCode = playerState.track.uri
+        songCode = playerState.track.uri.replacingOccurrences(of: "spotify:track:", with: "")
         artistName = playerState.track.artist.name
         
         NowPlayingData.songName = songName
@@ -193,6 +193,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                         NowPlayingData.albumCoverURL = url
                         
                         print("URL: \(url)")
+                        
+                        let stationVC: StationViewController = StationViewController()
+                        if UserDefaults.standard.string(forKey: "station") != "none" {
+                            stationVC.updateNowPlaying(name: self.songName, artist: self.artistName, id: self.songCode, art: url)
+                        }
                     }
                     
                 } else {
@@ -283,6 +288,8 @@ struct UserData {
     static var songs = [Song]()
     static var queue = [Song]()
     static var accessToken : String?
+    static var stationPin : String?
+    static var username : String?
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around

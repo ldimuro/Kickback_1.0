@@ -22,7 +22,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var nowPlayingView: UIView!
     @IBOutlet weak var queueTableView: UITableView!
-    let username = "testUser"
+    let username = "hello"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
     var userArray = [String]()
@@ -75,13 +75,10 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 
                 self.loadingPlaceholderView.uncover(animated: true)
                 
-                self.songName = NowPlayingData.songName
-                self.songCode = NowPlayingData.songCode
-                self.artistName = NowPlayingData.artistName
-                self.albumArtURL = NowPlayingData.albumCoverURL
+                self.getNowPlaying()
                 
-                self.songNameLabel.text = self.songName
-                self.artistLabel.text = self.artistName
+                self.songNameLabel?.text = self.songName
+                self.artistLabel?.text = self.artistName
                 
                 let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
@@ -89,6 +86,74 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 
                 self.queueTableView.reloadData()
             })
+        }
+    }
+    
+    func updateNowPlaying(name: String, artist: String, id: String, art: String) {
+        
+        print("SONG UPDATED")
+        // Update "Now Playing" every time a song ends and a new one begins
+        let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
+        let post = ["Name": name,
+                    "Artist": artist,
+                    "ID": id,
+                    "Album Art": art]
+        
+        let childUpdates = ["/Now Playing": post]
+        userRef.updateChildValues(childUpdates)
+        
+//        loadingPlaceholderView.cover(nowPlayingView, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+            
+            print("**********")
+            print("\(name) - \(artist) - \(id)")
+            print("**********")
+            
+            self.songNameLabel.text = name
+//            self.artistLabel!.text = artist
+            
+//            self.songName = NowPlayingData.songName
+//            self.songCode = NowPlayingData.songCode
+//            self.artistName = NowPlayingData.artistName
+//            self.albumArtURL = NowPlayingData.albumCoverURL
+            
+//            self.loadingPlaceholderView.uncover(animated: true)
+            
+//            self.artistLabel.text = self.artistName
+//
+//            let url = URL(string: art)
+//            self.albumArt.kf.setImage(with: url)
+//            self.blurredAlbumArt.kf.setImage(with: url)
+        })
+        
+        
+    }
+    
+    func getNowPlaying() {
+        self.songName = NowPlayingData.songName
+        self.songCode = NowPlayingData.songCode
+        self.artistName = NowPlayingData.artistName
+        self.albumArtURL = NowPlayingData.albumCoverURL
+        
+        let nowPlayingRef = Database.database().reference().child("Stations").child(UserData.stationPin!).child("Now Playing")
+        
+        //The final dictionary of station
+        let nowPlayingDict = ["Name": NowPlayingData.songName,
+                              "ID": NowPlayingData.songCode,
+                              "Artist": NowPlayingData.artistName,
+                              "Album Art": NowPlayingData.albumCoverURL]
+        
+        nowPlayingRef.setValue(nowPlayingDict) {
+            (error, reference) in
+            
+            if(error != nil) {
+                print(error!)
+            }
+            else {
+                print("Now Playing saved successfully")
+//                self.observeNowPlaying()
+            }
         }
     }
     
@@ -163,6 +228,9 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         self.present(optionMenu, animated: true, completion: nil)
         
     }
+    
+    
+    
     
     
     
