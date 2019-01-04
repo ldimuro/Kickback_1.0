@@ -99,6 +99,7 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     self.enterButton.backgroundColor = UIColor.gray
                     
                     UserDefaults.standard.set(key, forKey: "station")
+                    UserData.stationPin = key
                     
                     self.performSegue(withIdentifier: "goToStation", sender: self)
                 }

@@ -283,6 +283,8 @@ struct UserData {
     static var songs = [Song]()
     static var queue = [Song]()
     static var accessToken : String?
+    static var stationPin : String?
+    static var username : String?
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around

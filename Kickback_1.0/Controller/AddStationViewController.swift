@@ -58,6 +58,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         let formattedPin = randomPin()
         pin = formattedPin.replacingOccurrences(of: " ", with: "") // get rid of the spaces in-between each character
+        UserData.stationPin = pin
         pinLabel.text = formattedPin
         
         AppDelegate().initiateSession() // Start playing Spotify music
@@ -170,6 +171,27 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    func getProfile() {
+        let header = ["Authorization": "Bearer \(UserData.accessToken!)"]
+        
+        Alamofire.request("https://api.spotify.com/v1/me", method: .get, parameters: [:], headers: header)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    
+                    print("Success! Got the data")
+                    let dataJSON : JSON = JSON(response.result.value!)
+                    
+                    UserData.username = dataJSON["id"].string!
+                    print("USERNAME: \(UserData.username!)")
+                    
+                }
+                else {
+                    print("Error: \(String(describing: response.result.error!))")
+                }
+        }
+        
+    }
+    
     func getAllSongs(offset: Int, playlist: Playlist) {
         let header = ["Authorization": "Bearer \(UserData.accessToken!)"]
         let parameters = ["offset": "\(offset)"]
@@ -229,6 +251,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                         if self.playlistCount >= self.selectedPlaylists.count {
                             print("GOT ALL PLAYLISTS")
                             self.saveStation()
+                            self.getProfile()
                         }
                     }
                 }

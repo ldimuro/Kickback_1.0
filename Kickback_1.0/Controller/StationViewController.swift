@@ -22,7 +22,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var nowPlayingView: UIView!
     @IBOutlet weak var queueTableView: UITableView!
-    let username = "testUser"
+    let username = "hello"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
     var userArray = [String]()
@@ -163,6 +163,9 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         self.present(optionMenu, animated: true, completion: nil)
         
     }
+    
+    
+    
     
     
     

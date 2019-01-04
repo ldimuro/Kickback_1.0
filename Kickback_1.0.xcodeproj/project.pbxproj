@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8422B8E521DD6439006698A9 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8422B8E421DD6439006698A9 /* Playlist.swift */; };
+		84267FAB21DFEC7A0072D848 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84267FAA21DFEC7A0072D848 /* UsersViewController.swift */; };
+		84267FAD21DFEC8B0072D848 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84267FAC21DFEC8B0072D848 /* PlaylistViewController.swift */; };
 		846FDC4321DD779200A16803 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846FDC4221DD779200A16803 /* Song.swift */; };
 		84814CB321C84707002CEAE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84814CB221C84707002CEAE2 /* AppDelegate.swift */; };
 		84814CB521C84707002CEAE2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84814CB421C84707002CEAE2 /* ViewController.swift */; };
@@ -26,6 +28,8 @@
 /* Begin PBXFileReference section */
 		666A0D8C6732D4E8711D2184 /* Pods_Kickback_1_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kickback_1_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8422B8E421DD6439006698A9 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
+		84267FAA21DFEC7A0072D848 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
+		84267FAC21DFEC8B0072D848 /* PlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		846FDC4221DD779200A16803 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		84814CAF21C84707002CEAE2 /* Kickback_1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kickback_1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84814CB221C84707002CEAE2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				84FFDB6021C84C85003B2C70 /* HomePageViewController.swift */,
 				84FFDB6221C85350003B2C70 /* AddStationViewController.swift */,
 				84830B9121C9A201006DF341 /* StationViewController.swift */,
+				84267FAA21DFEC7A0072D848 /* UsersViewController.swift */,
+				84267FAC21DFEC8B0072D848 /* PlaylistViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -292,7 +298,9 @@
 				8422B8E521DD6439006698A9 /* Playlist.swift in Sources */,
 				846FDC4321DD779200A16803 /* Song.swift in Sources */,
 				84FFDB6321C85350003B2C70 /* AddStationViewController.swift in Sources */,
+				84267FAD21DFEC8B0072D848 /* PlaylistViewController.swift in Sources */,
 				84830B9221C9A201006DF341 /* StationViewController.swift in Sources */,
+				84267FAB21DFEC7A0072D848 /* UsersViewController.swift in Sources */,
 				84830B9421C9B2CF006DF341 /* AddPlaylist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
