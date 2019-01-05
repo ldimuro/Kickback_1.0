@@ -69,7 +69,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         
         // If user is not the owner, just adds user to the Station
         if !isOwner {
-            let userDict = ["Name": username]
+            let userDict = ["Symbol": UserData.symbol]
             let ref = Database.database().reference().child("Stations").child(stationPin!).child("Users")
             
             ref.child(username).setValue(userDict) {
@@ -216,7 +216,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 self.dismiss(animated: true, completion: nil)
             }))
         }
-        //If user is not the owner and leaves, only they will be removed from the station
+        // If user is not the owner and leaves, only they will be removed from the station
         else {
             optionMenu.addAction(UIAlertAction(title: "Leave this Station", style: .destructive, handler:{ (UIAlertAction)in
                 print("Left Station")
@@ -243,10 +243,4 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         self.present(optionMenu, animated: true, completion: nil)
         
     }
-    
-    
-    
-    
-    
-    
 }
