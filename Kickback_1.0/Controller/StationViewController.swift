@@ -17,9 +17,9 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     // MARK: VARIABLES
     
     @IBOutlet weak var albumArt: UIImageView!
-    @IBOutlet weak var blurredAlbumArt: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var symbolLabel: UILabel!
     @IBOutlet weak var nowPlayingView: UIView!
     @IBOutlet weak var queueTableView: UITableView!
     let username = "hello"
@@ -48,6 +48,20 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         loadingPlaceholderView.backgroundColor = .white
         loadingPlaceholderView.cover(nowPlayingView, animated: true)
 //        loadingPlaceholderView.cover(albumArt, animated: true)
+        
+        // Randomly assigns an emoji to each person who joins the station
+        let emojis = ["👻", "💀", "☠️", "👽", "😈", "👾", "🤖", "🤡", "💩", "🐱",
+                      "👁", "🧠", "👑", "🐶", "🐭", "🐼", "🐷", "🐸", "🐵", "🐴",
+                      "🦄", "🐝", "🦑", "🐍", "🐬", "🐳", "🦃", "🐲", "🍄", "🌞",
+                      "🌝", "🌚", "🌎", "⭐️", "🔥", "❄️", "🍎", "🍕", "🍔", "🍪",
+                      "🍺", "⚽️", "🏀", "🏈", "⚾️", "🎱", "🎸", "🎬", "🎹", "🎲",
+                      "🎧", "🚀", "🗿", "💿", "⏳", "💡", "💸", "💰", "🔮", "🎉",
+                      "❤️", "☯️", "✴️", "💯", "🔆", "🔱", "⚜️", "✅", "🌐", "🌀",
+                      "🔵", "🔴", "🕒", "♠️", "♣️", "♦️", "🔔", "🏴‍☠️", "🇺🇸", "💎"]
+        
+        let randomInt = Int.random(in: 0..<emojis.count)
+        UserData.symbol = emojis[randomInt]
+        symbolLabel.text = UserData.symbol
         
     }
     
@@ -82,7 +96,6 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 
                 let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
-                self.blurredAlbumArt.kf.setImage(with: url)
                 
                 self.queueTableView.reloadData()
             })
@@ -198,6 +211,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 
                 UserDefaults.standard.set(false, forKey: "isOwner")
                 UserDefaults.standard.set("none", forKey: "station")
+                UserData.symbol = ""
                 
                 self.dismiss(animated: true, completion: nil)
             }))
@@ -216,6 +230,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 }
                 
                 UserDefaults.standard.set("none", forKey: "station")
+                UserData.symbol = ""
                 
                 self.dismiss(animated: true, completion: nil)
             }))
