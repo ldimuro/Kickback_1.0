@@ -290,6 +290,7 @@ struct UserData {
     static var accessToken : String?
     static var stationPin : String?
     static var username : String?
+    static var symbol : String?
 }
 
 //Adds the click away from keyboard functionality for use in any view controller with self.hideKeyboard when tapped around

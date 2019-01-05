@@ -12,7 +12,7 @@ import Firebase
 class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var userTableView: UITableView!
-    var userArray = [String]()
+    var userArray = [[String:String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let cell = userTableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath)
         
-        cell.textLabel?.text = userArray[indexPath.row]
+        cell.textLabel?.text = "\(userArray[indexPath.row]["Symbol"]!)\t\(userArray[indexPath.row]["User"]!)"
         
         cell.selectionStyle = .none
         
@@ -50,10 +50,12 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 let snapKey = snap as! DataSnapshot
                 let value = snapKey.value as! String
+                let user = snapshot.key
                 
-                print(value)
+                let userDict = ["User": user,
+                                "Symbol": value]
                 
-                self.userArray.append(value)
+                self.userArray.append(userDict)
                 
                 self.userTableView.reloadData()
                 
