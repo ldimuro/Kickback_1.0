@@ -17,6 +17,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var pinTextfield: UITextField!
     @IBOutlet weak var enterButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    let blueColor : UIColor = UIColor(red: 0.145, green: 0.651, blue: 1.0, alpha: 1.0)
+    let redColor : UIColor = UIColor(red: 1.0, green: 0.302, blue: 0.302, alpha: 1.0)
     
 
     override func viewDidLoad() {
@@ -30,12 +32,21 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         errorLabel.isHidden = true
         pinTextfield.delegate = self
         pinTextfield.defaultTextAttributes.updateValue(5.0, forKey: NSAttributedString.Key.kern)
+        pinTextfield.layer.cornerRadius = 5
+        pinTextfield.layer.borderWidth = 1.0
+        pinTextfield.layer.borderColor = blueColor.cgColor
+        pinTextfield.attributedPlaceholder = NSAttributedString(string: "• • • •",
+                                                                attributes: [NSAttributedString.Key.foregroundColor: blueColor])
         enterButton.layer.cornerRadius = 5
+        enterButton.layer.borderWidth = 1.0
+        
         
         //The Enter button is initially faded
         if (pinTextfield.text?.isEmpty)! {
             self.enterButton.isEnabled = false
-            self.enterButton.backgroundColor = UIColor.lightGray
+//            self.enterButton.layer.borderWidth = 1.0
+            self.enterButton.layer.borderColor = blueColor.cgColor
+            self.enterButton.backgroundColor = UIColor.black
         }
         
         self.hideKeyboardWhenTappedAround()
@@ -50,17 +61,19 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         let char = string.cString(using: String.Encoding.utf8)!
         let isBackSpace = strcmp(char, "\\b")
         
-        self.pinTextfield.backgroundColor = UIColor.white
+        self.pinTextfield.backgroundColor = UIColor.black
         errorLabel.isHidden = true
         
         //Only accepts letters and the backspace button as inputs
         if (range != nil) || (isBackSpace == -92) {
             if !text.isEmpty && text.count >= 4 {
                 enterButton.isEnabled = true
-                enterButton.backgroundColor = UIColor(red: 0.0196, green: 0.4784, blue: 1.0, alpha: 1.0)
+                enterButton.backgroundColor = blueColor
+                pinTextfield.layer.borderColor = blueColor.cgColor
             } else {
                 enterButton.isEnabled = false
-                enterButton.backgroundColor = UIColor.lightGray
+                enterButton.backgroundColor = UIColor.black
+                pinTextfield.layer.borderColor = blueColor.cgColor
             }
             
             //User can only type 4 characters in the textfield
@@ -96,7 +109,7 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     print("STATION '\(key)' FOUND!")
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
-                    self.enterButton.backgroundColor = UIColor.gray
+                    self.enterButton.backgroundColor = UIColor.black
                     
                     UserDefaults.standard.set(key, forKey: "station")
                     UserData.stationPin = key
@@ -107,14 +120,16 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         }
         
         //DELAYS FOR A SECOND TO GIVE TIME TO COMMUNICATE INFORMATION WITH SERVER
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // in a second...
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // in a second...
             if stationFound == false {
                 print("Station not found")
                 self.errorLabel.isHidden = false
                 self.pinTextfield.text = ""
-                self.pinTextfield.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.2)
+                self.pinTextfield.layer.borderColor = self.redColor.cgColor
+                self.pinTextfield.attributedPlaceholder = NSAttributedString(string: "• • • •",
+                                                                             attributes: [NSAttributedString.Key.foregroundColor: self.redColor])
                 self.enterButton.isEnabled = false
-                self.enterButton.backgroundColor = UIColor.gray
+                self.enterButton.backgroundColor = UIColor.black
             }
         }
     }
