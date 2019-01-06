@@ -79,6 +79,24 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                     print(error!)
                 } else {
                     print("User added successfully")
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+                        
+                        self.loadingPlaceholderView.uncover(animated: true)
+                        
+                        self.songName = NowPlayingData.songName
+                        self.songCode = NowPlayingData.songCode
+                        self.artistName = NowPlayingData.artistName
+                        self.albumArtURL = NowPlayingData.albumCoverURL
+                        
+                        self.songNameLabel?.text = self.songName
+                        self.artistLabel?.text = self.artistName
+                        
+                        let url = URL(string: self.albumArtURL)
+                        self.albumArt.kf.setImage(with: url)
+                        
+                        self.queueTableView.reloadData()
+                    })
                 }
             }
         }
@@ -186,6 +204,10 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         cell.selectionStyle = .none
         
         return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     //MARK: BUTTONS
