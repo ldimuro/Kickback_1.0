@@ -141,7 +141,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
             print("\(name) - \(artist) - \(id)")
             print("**********")
             
-            self.songNameLabel.text = name
+//            self.songNameLabel.text = name
 //            self.artistLabel!.text = artist
             
 //            self.songName = NowPlayingData.songName
