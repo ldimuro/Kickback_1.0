@@ -111,6 +111,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
                     self.enterButton.backgroundColor = UIColor.black
+                    self.pinTextfield.attributedPlaceholder = NSAttributedString(string: "• • • •",
+                                                                                 attributes: [NSAttributedString.Key.foregroundColor: self.blueColor])
                     
                     UserDefaults.standard.set(key, forKey: "station")
                     UserData.stationPin = key

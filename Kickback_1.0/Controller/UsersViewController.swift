@@ -8,20 +8,26 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var userTableView: UITableView!
     var userArray = [[String:String]]()
+    let hud = JGProgressHUD(style: .light)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         userTableView.delegate = self
         userTableView.dataSource = self
+        
+        hud.show(in: self.view)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        
         getStationUsers()
     }
     
@@ -57,6 +63,7 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 self.userArray.append(userDict)
                 
+                self.hud.dismiss()
                 self.userTableView.reloadData()
                 
             }

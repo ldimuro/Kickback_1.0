@@ -276,6 +276,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 
 }
 
+// LIST OF USER DEFAULTS:
+// "station"    =   PIN or "none"
+// "isOwner"    =   True/False
+
 struct NowPlayingData {
     static var songName = ""
     static var songCode = ""
