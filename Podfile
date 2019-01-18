@@ -16,5 +16,6 @@ pod 'Firebase/Storage'
 pod 'AlamofireObjectMapper', '~> 5.0'
 pod 'Kingfisher', '~> 4.0'
 pod 'LoadingPlaceholderView'
+pod 'JGProgressHUD'
 
 end

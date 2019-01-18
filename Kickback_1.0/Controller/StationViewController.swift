@@ -11,6 +11,7 @@ import Firebase
 import FirebaseStorage
 import Kingfisher
 import LoadingPlaceholderView
+import JGProgressHUD
 
 class StationViewController: UIViewController, UIApplicationDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -22,6 +23,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     @IBOutlet weak var symbolLabel: UILabel!
     @IBOutlet weak var nowPlayingView: UIView!
     @IBOutlet weak var queueTableView: UITableView!
+    @IBOutlet weak var cellSymbol: UILabel!
+    
     let username = "hello"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
@@ -33,6 +36,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     var artistName = ""
     var albumArtURL = ""
     let loadingPlaceholderView = LoadingPlaceholderView()
+    let hud = JGProgressHUD(style: .light)
 
     //MARK: VIEW DID LOAD/APPEAR
     
@@ -44,20 +48,19 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         queueTableView.delegate = self
         queueTableView.dataSource = self
         
-        loadingPlaceholderView.gradientColor = .white
-        loadingPlaceholderView.backgroundColor = .white
-        loadingPlaceholderView.cover(nowPlayingView, animated: true)
+        hud.textLabel.text = "Loading Station"
+        hud.show(in: self.view)
+        
+//        loadingPlaceholderView.gradientColor = .white
+//        loadingPlaceholderView.backgroundColor = .white
+//        loadingPlaceholderView.cover(nowPlayingView, animated: true)
 //        loadingPlaceholderView.cover(albumArt, animated: true)
         
         // Randomly assigns an emoji to each person who joins the station
-        let emojis = ["👻", "💀", "☠️", "👽", "😈", "👾", "🤖", "🤡", "💩", "🐱",
-                      "👁", "🧠", "👑", "🐶", "🐭", "🐼", "🐷", "🐸", "🐵", "🐴",
-                      "🦄", "🐝", "🦑", "🐍", "🐬", "🐳", "🦃", "🐲", "🍄", "🌞",
-                      "🌝", "🌚", "🌎", "⭐️", "🔥", "❄️", "🍎", "🍕", "🍔", "🍪",
-                      "🍺", "⚽️", "🏀", "🏈", "⚾️", "🎱", "🎸", "🎬", "🎹", "🎲",
-                      "🎧", "🚀", "🗿", "💿", "⏳", "💡", "💸", "💰", "🔮", "🎉",
-                      "❤️", "☯️", "✴️", "💯", "🔆", "🔱", "⚜️", "✅", "🌐", "🌀",
-                      "🔵", "🔴", "🕒", "♠️", "♣️", "♦️", "🔔", "🏴‍☠️", "🇺🇸", "💎"]
+        let emojis = ["💀", "👽", "😈", "👾", "🤖", "🤡", "🐱", "🐶", "🐭",
+                      "🐼", "🐷", "🐸", "🐵", "🌞", "🌝", "🌚", "🌎", "❄️",
+                      "🍪", "⚽️", "🏀", "🏈", "⚾️", "🎱", "🎲", "💿", "🔆",
+                      "🌐", "🌀", "🔵", "🔴", "🕒", "💎"]
         
         let randomInt = Int.random(in: 0..<emojis.count)
         UserData.symbol = emojis[randomInt]
@@ -82,7 +85,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
                         
-                        self.loadingPlaceholderView.uncover(animated: true)
+//                        self.loadingPlaceholderView.uncover(animated: true)
+                        self.hud.dismiss()
                         
                         self.songName = NowPlayingData.songName
                         self.songCode = NowPlayingData.songCode
@@ -105,7 +109,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
                 
-                self.loadingPlaceholderView.uncover(animated: true)
+//                self.loadingPlaceholderView.uncover(animated: true)
+                self.hud.dismiss()
                 
                 self.getNowPlaying()
                 
@@ -141,7 +146,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
             print("\(name) - \(artist) - \(id)")
             print("**********")
             
-            self.songNameLabel.text = name
+//            self.songNameLabel.text = name
 //            self.artistLabel!.text = artist
             
 //            self.songName = NowPlayingData.songName
@@ -235,7 +240,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 UserDefaults.standard.set("none", forKey: "station")
                 UserData.symbol = ""
                 
-                self.dismiss(animated: true, completion: nil)
+//                self.dismiss(animated: true, completion: nil)
+                self.performSegue(withIdentifier: "exitStation", sender: nil)
             }))
         }
         // If user is not the owner and leaves, only they will be removed from the station
@@ -255,6 +261,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 UserData.symbol = ""
                 
                 self.dismiss(animated: true, completion: nil)
+//                self.performSegue(withIdentifier: "exitStation", sender: nil)
             }))
         }
         

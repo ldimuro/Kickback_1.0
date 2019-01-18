@@ -12,6 +12,7 @@ import Alamofire
 import AlamofireObjectMapper
 import SwiftyJSON
 import LoadingPlaceholderView
+import JGProgressHUD
 
 class AddStationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -30,6 +31,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     var defaultOffset = 0
     var defaultLimit = 100
     var playlistCount = 0
+    let hud = JGProgressHUD(style: .light)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,9 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         for each in UserData.playlists {
             each.added = false
         }
+        
+        hud.textLabel.text = "Loading Playlists"
+        hud.show(in: self.view)
         
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
@@ -68,6 +73,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
             
             repeat {
                 self.playlistTable.reloadData()
+                self.hud.dismiss()
             } while UserData.accessToken == nil
             
 //            self.getAllSongs(offset: self.defaultOffset, id: )
@@ -146,7 +152,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
 //        saveStation()
-        
     }
     
     @IBAction func cancelButton(_ sender: Any) {

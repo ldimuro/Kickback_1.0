@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseStorage
+import JGProgressHUD
 
 class HomePageViewController: UIViewController, UITextFieldDelegate {
     
@@ -110,6 +111,8 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
                     self.enterButton.backgroundColor = UIColor.black
+                    self.pinTextfield.attributedPlaceholder = NSAttributedString(string: "• • • •",
+                                                                                 attributes: [NSAttributedString.Key.foregroundColor: self.blueColor])
                     
                     UserDefaults.standard.set(key, forKey: "station")
                     UserData.stationPin = key
@@ -123,13 +126,19 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // in a second...
             if stationFound == false {
                 print("Station not found")
-                self.errorLabel.isHidden = false
+//                self.errorLabel.isHidden = false
                 self.pinTextfield.text = ""
                 self.pinTextfield.layer.borderColor = self.redColor.cgColor
                 self.pinTextfield.attributedPlaceholder = NSAttributedString(string: "• • • •",
                                                                              attributes: [NSAttributedString.Key.foregroundColor: self.redColor])
                 self.enterButton.isEnabled = false
                 self.enterButton.backgroundColor = UIColor.black
+                
+                let hud = JGProgressHUD(style: .dark)
+                hud.textLabel.text = "Station Not Found"
+                hud.indicatorView = JGProgressHUDErrorIndicatorView()
+                hud.show(in: self.view)
+                hud.dismiss(afterDelay: 2.0)
             }
         }
     }
