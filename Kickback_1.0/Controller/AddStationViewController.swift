@@ -176,27 +176,6 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    func getProfile() {
-        let header = ["Authorization": "Bearer \(UserData.accessToken!)"]
-        
-        Alamofire.request("https://api.spotify.com/v1/me", method: .get, parameters: [:], headers: header)
-            .responseJSON { response in
-                if response.result.isSuccess {
-                    
-                    print("Success! Got the data")
-                    let dataJSON : JSON = JSON(response.result.value!)
-                    
-                    UserData.username = dataJSON["id"].string!
-                    print("USERNAME: \(UserData.username!)")
-                    
-                }
-                else {
-                    print("Error: \(String(describing: response.result.error!))")
-                }
-        }
-        
-    }
-    
     func getAllSongs(offset: Int, playlist: Playlist) {
         let header = ["Authorization": "Bearer \(UserData.accessToken!)"]
         let parameters = ["offset": "\(offset)"]
@@ -217,7 +196,9 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                         let songDict = ["Name": "\(song.name!)",
                                         "Artist": "\(song.artist!)",
                                         "ID": "\(song.id!)",
-                                        "User": "ldimuro"] as [String : Any]
+                                        "Album Art": "\(song.art!)",
+                                        "User": UserData.username!,
+                                        "Symbol": UserData.symbol!] as [String : Any]
                         
 //                        self.songDictArray.append(songDict)
                         playlist.songDict.append(songDict)
@@ -227,7 +208,9 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                         newSong.name = song.name
                         newSong.artist = song.artist
                         newSong.id = song.id
-                        newSong.owner = "ldimuro"
+                        newSong.art = song.art
+                        newSong.owner = UserData.username
+                        newSong.symbol = UserData.symbol
                         
                         UserData.songs.append(newSong)
                         playlist.songs.append(newSong)
@@ -248,7 +231,8 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                         let playlistDict = ["Name": playlist.name,
                                             "Songs": playlist.songDict,
                                             "ID": playlist.id,
-                                            "Owner": "ldimuro"] as [String : Any]
+                                            "Owner": UserData.username!,
+                                            "Symbol": UserData.symbol!] as [String : Any]
                         
                         self.arrayOfPlaylists.append(playlistDict)
                         
@@ -256,7 +240,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
                         if self.playlistCount >= self.selectedPlaylists.count {
                             print("GOT ALL PLAYLISTS")
                             self.saveStation()
-                            self.getProfile()
+//                            self.getProfile()
                         }
                     }
                 }
@@ -272,8 +256,14 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         let addStation = Database.database().reference().child("Stations")
         let timestamp = "\(Date())"
         
+        let nowPlayingDict = ["Name": "N/A",
+                              "Artist": "N/A",
+                              "Album Art": "N/A",
+                              "ID": "N/A"]
+        
         //The final dictionary of station
         let postDictionary = ["Owner": "ldimuro",
+                              "Now Playing": nowPlayingDict,
                               "Users": [],
                               "Playlists": arrayOfPlaylists,
                               "Queue": [],

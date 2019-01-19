@@ -35,6 +35,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     var songCode = ""
     var artistName = ""
     var albumArtURL = ""
+    var user = ""
+    var symbol = ""
     let loadingPlaceholderView = LoadingPlaceholderView()
     let hud = JGProgressHUD(style: .light)
 
@@ -64,11 +66,11 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         
         let randomInt = Int.random(in: 0..<emojis.count)
         UserData.symbol = emojis[randomInt]
-        symbolLabel.text = UserData.symbol
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        updateNowPlaying()
         
         // If user is not the owner, just adds user to the Station
         if !isOwner {
@@ -112,39 +114,68 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
 //                self.loadingPlaceholderView.uncover(animated: true)
                 self.hud.dismiss()
                 
-                self.getNowPlaying()
+//                self.getNowPlaying()
                 
-                self.songNameLabel?.text = self.songName
-                self.artistLabel?.text = self.artistName
-                
-                let url = URL(string: self.albumArtURL)
-                self.albumArt.kf.setImage(with: url)
+//                self.songNameLabel?.text = self.songName
+//                self.artistLabel?.text = self.artistName
+//
+//                let url = URL(string: self.albumArtURL)
+//                self.albumArt.kf.setImage(with: url)
                 
                 self.queueTableView.reloadData()
             })
         }
     }
     
-    func updateNowPlaying(name: String, artist: String, id: String, art: String) {
-        
-        print("SONG UPDATED")
-        // Update "Now Playing" every time a song ends and a new one begins
-        let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
-        let post = ["Name": name,
-                    "Artist": artist,
-                    "ID": id,
-                    "Album Art": art]
-        
-        let childUpdates = ["/Now Playing": post]
-        userRef.updateChildValues(childUpdates)
+    func updateNowPlaying() {
         
 //        loadingPlaceholderView.cover(nowPlayingView, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
             
-            print("**********")
-            print("\(name) - \(artist) - \(id)")
-            print("**********")
+            print("SONG UPDATED")
+            // Update "Now Playing" every time a song ends and a new one begins
+            let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
+            let post = ["Name": UserData.queue[0].name,
+                        "Artist": UserData.queue[0].artist,
+                        "ID": UserData.queue[0].id,
+                        "Album Art": UserData.queue[0].art,
+                        "User": UserData.queue[0].owner,
+                        "Symbol": UserData.queue[0].symbol]
+            
+            let childUpdates = ["/Now Playing": post]
+            userRef.updateChildValues(childUpdates)
+            
+//            if NowPlayingData.songName == "" {
+//                NowPlayingData.songName = UserData.queue[0].name!
+//                NowPlayingData.songCode = UserData.queue[0].id!
+//                NowPlayingData.artistName = UserData.queue[0].artist!
+//                NowPlayingData.albumCoverURL = UserData.queue[0].art!
+//                NowPlayingData.user = UserData.queue[0].owner!
+//                NowPlayingData.symbol = UserData.queue[0].symbol!
+//            }
+            
+            self.songName = UserData.queue[0].name!
+            self.songCode = UserData.queue[0].id!
+            self.artistName = UserData.queue[0].artist!
+            self.albumArtURL = UserData.queue[0].art!
+            self.user = UserData.queue[0].owner!
+            self.symbol = UserData.queue[0].symbol!
+            
+            self.songNameLabel?.text = self.songName
+            self.artistLabel?.text = self.artistName
+            self.symbolLabel?.text = UserData.symbol
+            
+            let url = URL(string: self.albumArtURL)
+            self.albumArt.kf.setImage(with: url)
+            
+            print("FIRST IN LINE:")
+            print("********************")
+            print("\(UserData.queue[0].name!) - \(UserData.queue[0].artist!)")
+            print("********************")
+            
+            UserData.queue.remove(at: 0)
+            self.queueTableView.reloadData()
             
 //            self.songNameLabel.text = name
 //            self.artistLabel!.text = artist

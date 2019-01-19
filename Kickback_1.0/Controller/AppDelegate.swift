@@ -100,6 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                     let dataJSON : JSON = JSON(response.result.value!)
                     
                     self.getPlaylists(json: dataJSON)
+                    self.getProfile()
                     
                 }
                 else {
@@ -148,11 +149,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         print("player state changed")
+        print("track.name", playerState.track.name)
+        print("track.artist.name", playerState.track.artist.name)
 //        print("isPaused", playerState.isPaused)
 //        print("track.uri", playerState.track.uri)
-        print("track.name", playerState.track.name)
 //        print("track.imageIdentifier", playerState.track.imageIdentifier)
-        print("track.artist.name", playerState.track.artist.name)
 //        print("track.album.name", playerState.track.album.name)
 //        print("track.isSaved", playerState.track.isSaved)
 //        print("playbackSpeed", playerState.playbackSpeed)
@@ -172,6 +173,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         
         getAlbumArt(albumID: albumID)
         
+    }
+    
+    func getProfile() {
+        let header = ["Authorization": "Bearer \(accessToken)"]
+        
+        Alamofire.request("https://api.spotify.com/v1/me", method: .get, parameters: [:], headers: header)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    
+                    print("Success! Got the data")
+                    let dataJSON : JSON = JSON(response.result.value!)
+                    
+                    UserData.username = dataJSON["id"].string!
+                    print("USERNAME: \(UserData.username!)")
+                    
+                }
+                else {
+                    print("Error: \(String(describing: response.result.error!))")
+                }
+        }
     }
     
     func getAlbumArt(albumID: String) {
@@ -196,7 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                         
                         let stationVC: StationViewController = StationViewController()
                         if UserDefaults.standard.string(forKey: "station") != "none" {
-                            stationVC.updateNowPlaying(name: self.songName, artist: self.artistName, id: self.songCode, art: url)
+//                            stationVC.updateNowPlaying(name: self.songName, artist: self.artistName, id: self.songCode, art: url)
                         }
                     }
                     
@@ -223,7 +244,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
             playlist.name = name
             playlist.owner = owner
             playlist.id = id
-//            playlist.songs = songs
             playlist.totalSongs = totalSongs
             
             UserData.playlists.append(playlist)
@@ -285,6 +305,9 @@ struct NowPlayingData {
     static var songCode = ""
     static var artistName = ""
     static var albumCoverURL = ""
+    static var user = ""
+    static var symbol = ""
+    
 }
 
 struct UserData {

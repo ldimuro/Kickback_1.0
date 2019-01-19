@@ -15,12 +15,16 @@ class Song: Mappable {
     var artist : String?
     var id : String?
     var owner : String?
+    var symbol : String?
+    var art : String?
     
     init() {
         self.name = nil
         self.artist = nil
         self.id = nil
         self.owner = nil
+        self.symbol = nil
+        self.art = nil
     }
     
     required init?(map: Map) {
@@ -31,5 +35,6 @@ class Song: Mappable {
         name <- map["track.name"]
         artist <- map["track.artists.0.name"]
         id <- map["track.id"]
+        art <- map["track.album.images.0.url"]
     }
 }
