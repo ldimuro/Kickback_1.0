@@ -14,6 +14,7 @@ class Playlist {
     var songs = [Song]()
     var songDict = [[String : Any]]()
     var id : String = ""
+    var symbol : String = ""
     var totalSongs = 0
     var added = false
 }
