@@ -26,8 +26,6 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        
         getStationUsers()
     }
     

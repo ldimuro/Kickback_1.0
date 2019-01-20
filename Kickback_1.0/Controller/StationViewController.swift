@@ -129,72 +129,51 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     
     func updateNowPlaying() {
         
-//        loadingPlaceholderView.cover(nowPlayingView, animated: true)
+        print("UPDATE NOW PLAYING")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
-            
+        
+
+        self.queueTableView.reloadData()
+        
+        let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!).child("Now Playing")
+        
+        userRef.observe(.childChanged) { (snapshot) in
             print("SONG UPDATED")
-            // Update "Now Playing" every time a song ends and a new one begins
-            let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
-            let post = ["Name": UserData.queue[0].name,
-                        "Artist": UserData.queue[0].artist,
-                        "ID": UserData.queue[0].id,
-                        "Album Art": UserData.queue[0].art,
-                        "User": UserData.queue[0].owner,
-                        "Symbol": UserData.queue[0].symbol]
+            print("Update song? \(NowPlayingData.songChanged)")
             
-            let childUpdates = ["/Now Playing": post]
-            userRef.updateChildValues(childUpdates)
+            if NowPlayingData.songChanged {
+                
+                self.songName = NowPlayingData.songName
+                self.songCode = NowPlayingData.songCode
+                self.artistName = NowPlayingData.artistName
+                self.albumArtURL = NowPlayingData.albumCoverURL
+                self.user = NowPlayingData.user
+                self.symbol = NowPlayingData.symbol
+                
+                self.songNameLabel?.text = self.songName
+                self.artistLabel?.text = self.artistName
+                self.symbolLabel?.text = UserData.symbol
+                
+                let url = URL(string: self.albumArtURL)
+                self.albumArt.kf.setImage(with: url)
+                
+                print("FIRST IN LINE:")
+                print("********************")
+                print("\(self.songName) - \(self.artistName)")
+                print("********************")
+                
+                self.queueTableView.reloadData()
+                
+//            NowPlayingData.songChanged = false
+            }
+            else {
+//                NowPlayingData.songChanged = !NowPlayingData.songChanged
+
+            }
             
-//            if NowPlayingData.songName == "" {
-//                NowPlayingData.songName = UserData.queue[0].name!
-//                NowPlayingData.songCode = UserData.queue[0].id!
-//                NowPlayingData.artistName = UserData.queue[0].artist!
-//                NowPlayingData.albumCoverURL = UserData.queue[0].art!
-//                NowPlayingData.user = UserData.queue[0].owner!
-//                NowPlayingData.symbol = UserData.queue[0].symbol!
-//            }
             
-            self.songName = UserData.queue[0].name!
-            self.songCode = UserData.queue[0].id!
-            self.artistName = UserData.queue[0].artist!
-            self.albumArtURL = UserData.queue[0].art!
-            self.user = UserData.queue[0].owner!
-            self.symbol = UserData.queue[0].symbol!
             
-            self.songNameLabel?.text = self.songName
-            self.artistLabel?.text = self.artistName
-            self.symbolLabel?.text = UserData.symbol
-            
-            let url = URL(string: self.albumArtURL)
-            self.albumArt.kf.setImage(with: url)
-            
-            print("FIRST IN LINE:")
-            print("********************")
-            print("\(UserData.queue[0].name!) - \(UserData.queue[0].artist!)")
-            print("********************")
-            
-            UserData.queue.remove(at: 0)
-            self.queueTableView.reloadData()
-            
-//            self.songNameLabel.text = name
-//            self.artistLabel!.text = artist
-            
-//            self.songName = NowPlayingData.songName
-//            self.songCode = NowPlayingData.songCode
-//            self.artistName = NowPlayingData.artistName
-//            self.albumArtURL = NowPlayingData.albumCoverURL
-            
-//            self.loadingPlaceholderView.uncover(animated: true)
-            
-//            self.artistLabel.text = self.artistName
-//
-//            let url = URL(string: art)
-//            self.albumArt.kf.setImage(with: url)
-//            self.blurredAlbumArt.kf.setImage(with: url)
-        })
-        
-        
+        }
     }
     
     func getNowPlaying() {

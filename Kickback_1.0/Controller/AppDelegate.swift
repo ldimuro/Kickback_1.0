@@ -148,9 +148,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }
 
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
-        print("player state changed")
-        print("track.name", playerState.track.name)
-        print("track.artist.name", playerState.track.artist.name)
+//        print("player state changed")
+//        print("track.name", playerState.track.name)
+//        print("track.artist.name", playerState.track.artist.name)
 //        print("isPaused", playerState.isPaused)
 //        print("track.uri", playerState.track.uri)
 //        print("track.imageIdentifier", playerState.track.imageIdentifier)
@@ -161,13 +161,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 //        print("playbackOptions.repeatMode", playerState.playbackOptions.repeatMode.hashValue)
 //        print("playbackPosition", playerState.playbackPosition)
         
+//        if !UserData.queue.isEmpty {
+//            // Update "Now Playing" every time a song ends and a new one begins
+//            let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
+//            let post = ["Name": UserData.queue[0].name,
+//                        "Artist": UserData.queue[0].artist,
+//                        "ID": UserData.queue[0].id,
+//                        "Album Art": UserData.queue[0].art,
+//                        "User": UserData.queue[0].owner,
+//                        "Symbol": UserData.queue[0].symbol]
+//
+//            let childUpdates = ["/Now Playing": post]
+//            userRef.updateChildValues(childUpdates)
+//        }
+
+        if !UserData.queue.isEmpty {
+            
+            print("SONG CHANGED? \(NowPlayingData.songChanged)")
+            if NowPlayingData.songChanged == true {
+            
+                print("APP DELEGATE UPDATE")
+                NowPlayingData.songChanged = false
+//            NowPlayingData.songChanged = !NowPlayingData.songChanged
+            
+                // Update "Now Playing" every time a song ends and a new one begins
+                let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
+                let post = ["Name": UserData.queue[0].name,
+                            "Artist": UserData.queue[0].artist,
+                            "ID": UserData.queue[0].id,
+                            "Album Art": UserData.queue[0].art,
+                            "User": UserData.queue[0].owner,
+                            "Symbol": UserData.queue[0].symbol]
+                
+                let childUpdates = ["/Now Playing": post]
+                userRef.updateChildValues(childUpdates)
+                
+                NowPlayingData.songName = UserData.queue[0].name!
+                NowPlayingData.songCode = UserData.queue[0].id!
+                NowPlayingData.artistName = UserData.queue[0].artist!
+                NowPlayingData.albumCoverURL = UserData.queue[0].art!
+                NowPlayingData.user = UserData.queue[0].owner!
+                NowPlayingData.symbol = UserData.queue[0].symbol!
+                
+                print("SONG REMOVED FROM QUEUE IN APP DELEGATE")
+                UserData.queue.remove(at: 0)
+            }
+        
+        }
+        
         songName = playerState.track.name
         songCode = playerState.track.uri.replacingOccurrences(of: "spotify:track:", with: "")
         artistName = playerState.track.artist.name
         
-        NowPlayingData.songName = songName
-        NowPlayingData.songCode = songCode
-        NowPlayingData.artistName = artistName
+//        NowPlayingData.songName = songName
+//        NowPlayingData.songCode = songCode
+//        NowPlayingData.artistName = artistName
         
         let albumID = playerState.track.album.uri.replacingOccurrences(of: "spotify:album:", with: "")
         
@@ -211,14 +259,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                     
                     if let url = dataJSON["images"][0]["url"].string {
                         self.albumArtURL = url
-                        NowPlayingData.albumCoverURL = url
+//                        NowPlayingData.albumCoverURL = url
                         
                         print("URL: \(url)")
                         
-                        let stationVC: StationViewController = StationViewController()
-                        if UserDefaults.standard.string(forKey: "station") != "none" {
+//                        let stationVC: StationViewController = StationViewController()
+//                        if UserDefaults.standard.string(forKey: "station") != "none" {
 //                            stationVC.updateNowPlaying(name: self.songName, artist: self.artistName, id: self.songCode, art: url)
-                        }
+//                        }
                     }
                     
                 } else {
@@ -237,7 +285,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
             
             let name = json["items"][x]["name"].string!
             let owner = json["items"][x]["owner"]["id"].string!
-            let songs = json["items"][x]["tracks"]["href"].string!
             let id = json["items"][x]["id"].string!
             let totalSongs = json["items"][x]["tracks"]["total"].int!
             
@@ -307,7 +354,8 @@ struct NowPlayingData {
     static var albumCoverURL = ""
     static var user = ""
     static var symbol = ""
-    
+    static var newNowPlaying = true
+    static var songChanged = false
 }
 
 struct UserData {

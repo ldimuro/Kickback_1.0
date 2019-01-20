@@ -278,7 +278,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
             else {
                 print("Station saved successfully")
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self.generateInitQueue()
                 }
             }
@@ -302,7 +302,34 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
         
         print("FINISHED BUILDING QUEUE")
         
-        UserData.queue = queue
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            
+            UserData.queue = queue
+            
+            // Update initial "Now Playing" song
+            let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!)
+            let post = ["Name": UserData.queue[0].name,
+                        "Artist": UserData.queue[0].artist,
+                        "ID": UserData.queue[0].id,
+                        "Album Art": UserData.queue[0].art,
+                        "User": UserData.queue[0].owner,
+                        "Symbol": UserData.queue[0].symbol]
+            
+            let childUpdates = ["/Now Playing": post]
+            userRef.updateChildValues(childUpdates)
+            
+            NowPlayingData.songName = UserData.queue[0].name!
+            NowPlayingData.songCode = UserData.queue[0].id!
+            NowPlayingData.artistName = UserData.queue[0].artist!
+            NowPlayingData.albumCoverURL = UserData.queue[0].art!
+            NowPlayingData.user = UserData.queue[0].owner!
+            NowPlayingData.symbol = UserData.queue[0].symbol!
+            
+            UserData.queue.remove(at: 0)
+            print("SONG REMOVED FROM QUEUE")
+            
+            NowPlayingData.songChanged = true
+        }
     }
     
 }
