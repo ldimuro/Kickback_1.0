@@ -258,8 +258,8 @@
                                                     <color key="textColor" red="0.1450980392" green="0.65098039220000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="👽" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEy-3e-R06">
-                                                    <rect key="frame" x="11" y="10" width="35" height="35"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="🔴" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEy-3e-R06">
+                                                    <rect key="frame" x="11" y="10" width="35" height="37"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                                     <nil key="textColor"/>
@@ -461,7 +461,6 @@
         <image name="users" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yhr-7g-hIQ"/>
         <segue reference="RaK-ZK-13X"/>
         <segue reference="s77-ez-R4i"/>
     </inferredMetricsTieBreakers>

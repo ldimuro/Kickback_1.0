@@ -175,13 +175,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 //            userRef.updateChildValues(childUpdates)
 //        }
 
-        if !UserData.queue.isEmpty {
+        if !UserData.queue.isEmpty && playerState.playbackPosition <= 100 {
             
             print("SONG CHANGED? \(NowPlayingData.songChanged)")
-            if NowPlayingData.songChanged == true {
+//            if NowPlayingData.songChanged == true {
             
                 print("APP DELEGATE UPDATE")
-                NowPlayingData.songChanged = false
+//                NowPlayingData.songChanged = false
 //            NowPlayingData.songChanged = !NowPlayingData.songChanged
             
                 // Update "Now Playing" every time a song ends and a new one begins
@@ -203,9 +203,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                 NowPlayingData.user = UserData.queue[0].owner!
                 NowPlayingData.symbol = UserData.queue[0].symbol!
                 
-                print("SONG REMOVED FROM QUEUE IN APP DELEGATE")
-                UserData.queue.remove(at: 0)
-            }
+//                print("SONG REMOVED FROM QUEUE IN APP DELEGATE")
+                
+//            }
         
         }
         
@@ -261,7 +261,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
                         self.albumArtURL = url
 //                        NowPlayingData.albumCoverURL = url
                         
-                        print("URL: \(url)")
+//                        print("URL: \(url)")
                         
 //                        let stationVC: StationViewController = StationViewController()
 //                        if UserDefaults.standard.string(forKey: "station") != "none" {

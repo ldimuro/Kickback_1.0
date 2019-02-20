@@ -31,7 +31,7 @@ class AddStationViewController: UIViewController, UITableViewDelegate, UITableVi
     var defaultOffset = 0
     var defaultLimit = 100
     var playlistCount = 0
-    let hud = JGProgressHUD(style: .light)
+    let hud = JGProgressHUD(style: .extraLight)
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -14,7 +14,7 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var userTableView: UITableView!
     var userArray = [[String:String]]()
-    let hud = JGProgressHUD(style: .light)
+    let hud = JGProgressHUD(style: .extraLight)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,15 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let cell = userTableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath)
         
-        cell.textLabel?.text = "\(userArray[indexPath.row]["Symbol"]!)\t\(userArray[indexPath.row]["User"]!)"
+        // Checks to see if it should mark the user's name as "owner" if they own the station
+//        if indexPath.row == 0 && (UserDefaults.standard.string(forKey: "isOwner") != nil) {
+//            cell.textLabel?.text = "\(userArray[indexPath.row]["Symbol"]!)\t\(userArray[indexPath.row]["User"]!)\t\t\t⭐️"
+//        }
+//        else {
+            cell.textLabel?.text = "\(userArray[indexPath.row]["Symbol"]!)\t\(userArray[indexPath.row]["User"]!)"
+//        }
+        
+//        cell.textLabel?.text = "\(userArray[indexPath.row]["Symbol"]!)\t\(userArray[indexPath.row]["User"]!)"
         
         cell.selectionStyle = .none
         
@@ -45,6 +53,12 @@ class UsersViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func getStationUsers() {
+        
+//        let stationOwner = ["User": "\(UserData.username!)",
+//            "Symbol": "\(UserData.symbol!)"]
+//        userArray.append(stationOwner)
+//        userTableView.reloadData()
+//        hud.dismiss()
         
         let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!).child("Users")
         

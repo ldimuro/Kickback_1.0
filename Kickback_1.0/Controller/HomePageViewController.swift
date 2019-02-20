@@ -87,9 +87,11 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    let searchingSpinner = JGProgressHUD(style: .extraLight)
     @IBAction func enterButtonPressed(_ sender: Any) {
         findStation()
         
+        searchingSpinner.show(in: self.view)
     }
     
     //Looks for a station that matches the entered PIN
@@ -108,6 +110,7 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
                 if key == self.pinTextfield.text! {
                     stationFound = true
                     print("STATION '\(key)' FOUND!")
+                    self.searchingSpinner.dismiss()
                     self.pinTextfield.text = ""
                     self.enterButton.isEnabled = false
                     self.enterButton.backgroundColor = UIColor.black
@@ -125,6 +128,9 @@ class HomePageViewController: UIViewController, UITextFieldDelegate {
         //DELAYS FOR A SECOND TO GIVE TIME TO COMMUNICATE INFORMATION WITH SERVER
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // in a second...
             if stationFound == false {
+                
+                self.searchingSpinner.dismiss()
+                
                 print("Station not found")
 //                self.errorLabel.isHidden = false
                 self.pinTextfield.text = ""

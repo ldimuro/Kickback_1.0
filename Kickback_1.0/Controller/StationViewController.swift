@@ -25,7 +25,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     @IBOutlet weak var queueTableView: UITableView!
     @IBOutlet weak var cellSymbol: UILabel!
     
-    let username = "hello"
+    let username = "lou"
     let stationPin = UserDefaults.standard.string(forKey: "station")
     let isOwner = UserDefaults.standard.bool(forKey: "isOwner")
     var userArray = [String]()
@@ -38,7 +38,7 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
     var user = ""
     var symbol = ""
     let loadingPlaceholderView = LoadingPlaceholderView()
-    let hud = JGProgressHUD(style: .light)
+    let hud = JGProgressHUD(style: .extraLight)
 
     //MARK: VIEW DID LOAD/APPEAR
     
@@ -136,24 +136,26 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
         self.queueTableView.reloadData()
         
         let userRef = Database.database().reference().child("Stations").child(UserData.stationPin!).child("Now Playing")
-        
-        userRef.observe(.childChanged) { (snapshot) in
+        userRef.observeSingleEvent(of: .childChanged) { (snapshot) in
+            
+            print("USERREF CHILDREN: \(snapshot.childrenCount)")
             print("SONG UPDATED")
             print("Update song? \(NowPlayingData.songChanged)")
             
-            if NowPlayingData.songChanged {
-                
+//            if NowPlayingData.songChanged {
+            
                 self.songName = NowPlayingData.songName
                 self.songCode = NowPlayingData.songCode
                 self.artistName = NowPlayingData.artistName
                 self.albumArtURL = NowPlayingData.albumCoverURL
                 self.user = NowPlayingData.user
-                self.symbol = NowPlayingData.symbol
-                
+//                self.symbol = NowPlayingData.symbol
+            
                 self.songNameLabel?.text = self.songName
                 self.artistLabel?.text = self.artistName
-                self.symbolLabel?.text = UserData.symbol
-                
+//                self.symbolLabel?.text = UserData.symbol
+                self.symbolLabel?.text = "🔴"                       // MAKE SURE TO UNCOMMENT THIS
+            
                 let url = URL(string: self.albumArtURL)
                 self.albumArt.kf.setImage(with: url)
                 
@@ -161,15 +163,18 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
                 print("********************")
                 print("\(self.songName) - \(self.artistName)")
                 print("********************")
-                
+            
+                print("SONG REMOVED FROM QUEUE")
+            
+                UserData.queue.remove(at: 0)
                 self.queueTableView.reloadData()
                 
 //            NowPlayingData.songChanged = false
-            }
-            else {
-//                NowPlayingData.songChanged = !NowPlayingData.songChanged
-
-            }
+//            }
+//            else {
+////                NowPlayingData.songChanged = !NowPlayingData.songChanged
+//
+//            }
             
             
             
@@ -202,6 +207,8 @@ class StationViewController: UIViewController, UIApplicationDelegate, UITableVie
             }
         }
     }
+    
+    
     
     //MARK: TABLE VIEW
     
